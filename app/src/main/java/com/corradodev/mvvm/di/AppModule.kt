@@ -21,7 +21,7 @@ class AppModule(private val context: Context) {
 
     @Provides
     fun providesAppDatabase(context: Context): AppDatabase =
-            Room.databaseBuilder(context, AppDatabase::class.java, "app-db").allowMainThreadQueries().build()
+            Room.databaseBuilder(context, AppDatabase::class.java, "app-db").build()
 
     @Provides
     fun providesTaskDAO(database: AppDatabase) = database.taskDAO()

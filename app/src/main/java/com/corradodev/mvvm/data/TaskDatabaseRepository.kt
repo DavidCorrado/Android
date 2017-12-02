@@ -1,6 +1,7 @@
 package com.corradodev.mvvm.data
 
 import android.arch.lifecycle.LiveData
+import kotlinx.coroutines.experimental.async
 import javax.inject.Inject
 
 /**
@@ -16,11 +17,15 @@ class TaskDatabaseRepository @Inject constructor(val taskDAO: TaskDAO) : Reposit
         return taskDAO.findAll()
     }
 
-    override fun save(t: Task) {
-        taskDAO.save(t)
+    override fun save(data: Task) {
+        async {
+            taskDAO.save(data)
+        }
     }
 
-    override fun delete(t: Task) {
-        taskDAO.delete(t)
+    override fun delete(data: Task) {
+        async {
+            taskDAO.delete(data)
+        }
     }
 }

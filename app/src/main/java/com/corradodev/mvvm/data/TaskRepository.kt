@@ -9,7 +9,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-class TaskRepository @Inject constructor(val taskRepository: TaskDatabaseRepository) : RepositoryInterface<Task> {
+class TaskRepository @Inject constructor(private val taskRepository: TaskDatabaseRepository) : RepositoryInterface<Task> {
     override fun find(id: Long): LiveData<Task> {
         return taskRepository.find(id)
     }
@@ -18,11 +18,11 @@ class TaskRepository @Inject constructor(val taskRepository: TaskDatabaseReposit
         return taskRepository.findAll()
     }
 
-    override fun save(t: Task) {
-        taskRepository.save(t)
+    override fun save(data: Task) {
+        taskRepository.save(data)
     }
 
-    override fun delete(t: Task) {
-        taskRepository.delete(t)
+    override fun delete(data: Task) {
+        taskRepository.delete(data)
     }
 }

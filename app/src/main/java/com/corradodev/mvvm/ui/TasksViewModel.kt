@@ -16,7 +16,7 @@ class TasksViewModel : ViewModel() {
 
     fun initializeRepo() {
         if (tasks != null) {
-            return;//tasks already created
+            return;
         }
         taskRepository.save(Task("Title", "Description"))
         tasks = taskRepository.findAll()

@@ -13,8 +13,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     lateinit var tasksViewModel: TasksViewModel
-    @Inject lateinit var taskRepository: TaskRepository
-    var tasks: LiveData<List<Task>>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

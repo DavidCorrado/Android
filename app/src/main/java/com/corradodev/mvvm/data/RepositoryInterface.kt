@@ -9,6 +9,6 @@ import android.arch.lifecycle.LiveData
 interface RepositoryInterface<T> {
     fun find(id: Long): LiveData<T>
     fun findAll(): LiveData<List<T>>
-    fun save(t: T)
-    fun delete(t: T)
+    fun save(data: T)
+    fun delete(data: T)
 }
