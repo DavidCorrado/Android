@@ -10,15 +10,6 @@ import javax.inject.Inject
  * Created by davidcorrado on 11/17/17.
  */
 
-class TasksViewModel : ViewModel() {
-    var tasks: LiveData<List<Task>>? = null
-    @Inject lateinit var taskRepository: TaskRepository
-
-    fun initializeRepo() {
-        if (tasks != null) {
-            return;
-        }
-        taskRepository.save(Task("Title", "Description"))
-        tasks = taskRepository.findAll()
-    }
+class TasksViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
+    var tasks: LiveData<List<Task>> = taskRepository.findAll()
 }

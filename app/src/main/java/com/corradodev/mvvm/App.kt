@@ -1,24 +1,27 @@
 package com.corradodev.mvvm
 
-import android.app.Application
 import com.corradodev.mvvm.di.AppComponent
 import com.corradodev.mvvm.di.AppModule
 import com.corradodev.mvvm.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 
 /**
  * Created by davidcorrado on 11/17/17.
  */
 
-class App : Application() {
+class App : DaggerApplication() {
 
     companion object {
         lateinit var appComponent: AppComponent
     }
 
     override fun onCreate() {
-        super.onCreate()
-
         appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
-        appComponent.inject(this)
+        super.onCreate()
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return appComponent
     }
 }

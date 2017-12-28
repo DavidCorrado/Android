@@ -1,31 +1,27 @@
 package com.corradodev.mvvm.ui
 
-import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.corradodev.mvvm.App
 import com.corradodev.mvvm.R
 import com.corradodev.mvvm.data.Task
-import com.corradodev.mvvm.data.TaskRepository
+import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var tasksViewModel: TasksViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        tasksViewModel = ViewModelProviders.of(this, viewModelFactory).get(TasksViewModel::class.java)
         setContentView(R.layout.activity_main)
-        App.appComponent.inject(this)
-        tasksViewModel = ViewModelProviders.of(this).get(TasksViewModel::class.java)
-        App.appComponent.inject(tasksViewModel)
-        tasksViewModel.initializeRepo()
 
-        tasksViewModel.tasks!!.observeForever {
+        //TODO replace forever with regular observe
+        tasksViewModel.tasks.observeForever {
             it?.let {
                 for (task: Task in it) {
-                    var a = 0
                 }
             }
         };
