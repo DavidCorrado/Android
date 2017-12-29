@@ -11,7 +11,7 @@ import dagger.multibindings.IntoMap
  */
 
 @Module()
-abstract class MainActivityModule {
+abstract class TaskEditActivityModule {
     @Binds
     @IntoMap
     @ViewModelKey(TasksViewModel::class)

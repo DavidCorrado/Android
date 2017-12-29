@@ -11,5 +11,15 @@ import javax.inject.Inject
  */
 
 class TasksViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
-    var tasks: LiveData<List<Task>> = taskRepository.findAll()
+    fun getTasks(): LiveData<List<Task>> {
+        return taskRepository.findAll();
+    }
+
+    fun getTask(id: Long): LiveData<Task> {
+        return taskRepository.find(id);
+    }
+
+    fun saveTask(task: Task) {
+        taskRepository.save(task)
+    }
 }
