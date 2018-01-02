@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.corradodev.mvvm.R
-import com.corradodev.mvvm.data.Task
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_task_list.*
 import javax.inject.Inject
@@ -28,7 +27,6 @@ class TaskListActivity : DaggerAppCompatActivity() {
                 recycler_view.adapter = TaskAdapter(it)
             }
         }
-        tasksViewModel.saveTask(Task("Test", "Test2"))
 
         fab_add.setOnClickListener {
             startActivity(taskEditIntent(null))

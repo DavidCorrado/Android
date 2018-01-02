@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.corradodev.mvvm.R
 import com.corradodev.mvvm.data.Task
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_task_edit.*
 import javax.inject.Inject
 
 fun Context.taskEditIntent(task: Task?): Intent {
@@ -44,14 +45,15 @@ class TaskEditActivity : DaggerAppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_done,menu)
+        menuInflater.inflate(R.menu.menu_done, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_done -> {
-
+                tasksViewModel.saveTask(Task(et_title.text.toString(), et_description.text.toString()))
+                finish()
                 return true
             }
         }
