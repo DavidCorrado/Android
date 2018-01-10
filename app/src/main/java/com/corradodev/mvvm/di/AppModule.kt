@@ -8,6 +8,7 @@ import com.corradodev.mvvm.data.TaskDatabaseRepository
 import com.corradodev.mvvm.data.TaskRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Created by davidcorrado on 11/17/17.
@@ -19,6 +20,7 @@ class AppModule(private val context: Context) {
     @Provides
     fun providesAppContext() = context
 
+    @Singleton
     @Provides
     fun providesAppDatabase(context: Context): AppDatabase =
             Room.databaseBuilder(context, AppDatabase::class.java, "app-db").build()
