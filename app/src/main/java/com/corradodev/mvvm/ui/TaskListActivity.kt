@@ -24,7 +24,9 @@ class TaskListActivity : DaggerAppCompatActivity() {
         //TODO replace forever with regular observe
         tasksViewModel.getTasks().observeForever {
             it?.let {
-                recycler_view.adapter = TaskAdapter(it)
+                recycler_view.adapter = TaskAdapter(it) {
+                    startActivity(taskEditIntent(it))
+                }
             }
         }
 

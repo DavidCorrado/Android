@@ -22,37 +22,47 @@ fun Context.taskEditIntent(task: Task?): Intent {
 }
 
 private const val INTENT_TASK_ID = "INTENT_TASK_ID"
-private const val INVALID_TASK_ID = -1L
+private const val INVALID_TASK_ID = 0L
 
 class TaskEditActivity : DaggerAppCompatActivity() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var tasksViewModel: TasksViewModel
-    private var id = INVALID_TASK_ID
+    private var id: Long = INVALID_TASK_ID
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tasksViewModel = ViewModelProviders.of(this, viewModelFactory).get(TasksViewModel::class.java)
         setContentView(R.layout.activity_task_edit)
 
         id = intent.getLongExtra(INTENT_TASK_ID, INVALID_TASK_ID)
-//        if (id != INVALID_TASK_ID) {
-//            //TODO replace forever with regular observe
-//            tasksViewModel.getTask(id).observeForever {
-//                it?.let {
-//                    it.
-//                }
-//            };
-//        }
+        if (savedInstanceState == null && id != INVALID_TASK_ID) {
+            //TODO replace forever with regular observe
+            tasksViewModel.getTask(id).observeForever {
+                it?.let {
+                    et_title.setText(it.title)
+                    et_description.setText(it.description)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_done, menu)
+        menuInflater.inflate(R.menu.menu_edit, menu)
+        if (id == INVALID_TASK_ID) {
+            menu.removeItem(R.id.action_delete)
+        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val task = Task(id, et_title.text.toString(), et_description.text.toString())
         when (item.itemId) {
             R.id.action_done -> {
-                tasksViewModel.saveTask(Task(et_title.text.toString(), et_description.text.toString()))
+                tasksViewModel.saveTask(task)
+                finish()
+                return true
+            }
+            R.id.action_delete -> {
+                tasksViewModel.deleteTask(task)
                 finish()
                 return true
             }

@@ -22,4 +22,8 @@ class TasksViewModel @Inject constructor(private val taskRepository: TaskReposit
     fun saveTask(task: Task) {
         taskRepository.save(task)
     }
+
+    fun deleteTask(task: Task) {
+        taskRepository.delete(task)
+    }
 }

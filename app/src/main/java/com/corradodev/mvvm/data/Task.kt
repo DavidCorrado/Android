@@ -9,8 +9,7 @@ import android.arch.persistence.room.PrimaryKey
  */
 
 @Entity(tableName = "tasks")
-data class Task(@ColumnInfo(name = "title") var title: String,
-                @ColumnInfo(name = "description") var description: String){
-    @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true) var id: Long = 0
+data class Task(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long,
+                @ColumnInfo(name = "title") var title: String,
+                @ColumnInfo(name = "description") var description: String) {
 }
