@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_done"
         android:title="@string/done"
         app:iconTint="@android:color/white"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_delete"

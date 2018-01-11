@@ -1,5 +1,6 @@
 package com.corradodev.mvvm.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -35,13 +36,12 @@ class TaskEditActivity : DaggerAppCompatActivity() {
 
         id = intent.getLongExtra(INTENT_TASK_ID, INVALID_TASK_ID)
         if (savedInstanceState == null && id != INVALID_TASK_ID) {
-            //TODO replace forever with regular observe
-            tasksViewModel.getTask(id).observeForever {
+            tasksViewModel.getTask(id).observe(this, Observer<Task> { it ->
                 it?.let {
                     et_title.setText(it.title)
                     et_description.setText(it.description)
                 }
-            }
+            })
         }
     }
 
