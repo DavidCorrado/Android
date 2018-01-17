@@ -12,6 +12,9 @@ import com.corradodev.mvvm.R
 import com.corradodev.mvvm.data.Task
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_task_edit.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.appcompat.v7.Appcompat
+import org.jetbrains.anko.cancelButton
 import javax.inject.Inject
 
 fun Context.taskEditIntent(task: Task?): Intent {
@@ -62,8 +65,13 @@ class TaskEditActivity : DaggerAppCompatActivity() {
                 return true
             }
             R.id.action_delete -> {
-                tasksViewModel.deleteTask(task)
-                finish()
+                alert(Appcompat, getString(R.string.delete_task_question)) {
+                    positiveButton(R.string.delete) {
+                        tasksViewModel.deleteTask(task)
+                        finish()
+                    }
+                    cancelButton { }
+                }.show()
                 return true
             }
         }
