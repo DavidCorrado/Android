@@ -1,13 +1,20 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.10'
-    ext.support_version = '27.0.2'
-    ext.espresso_version = '3.0.1'
-    ext.dagger_version = '2.13'
-    ext.arch_version = '1.0.0'
-    ext.retrofit_version = '2.3.0'
-    ext.anko_version = '0.10.4'
+    ext.kotlinVersion = '1.2.21'
+    ext.supportVersion = '27.0.2'
+    ext.espressoVersion = '3.0.1'
+    ext.daggerVersion = '2.13'
+    ext.archVersion = '1.0.0'
+    ext.retrofitVersion = '2.3.0'
+    ext.ankoVersion = '0.10.4'
+    ext.constraintVersion = '1.0.2'
+    ext.rxAndroidVersion = '2.0.1'
+    ext.rxJavaVersion = '2.1.6'
+    ext.gsonVersion = '2.8.2'
+    ext.junitVersion = '4.12'
+    ext.testRunnerVersion = '1.0.1'
+    ext.kotlinCoroutinesVersion = '0.19.3'
 
     repositories {
         google()
@@ -15,7 +22,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 

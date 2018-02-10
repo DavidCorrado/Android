@@ -41,8 +41,8 @@ class TaskEditActivity : DaggerAppCompatActivity() {
         if (savedInstanceState == null && id != INVALID_TASK_ID) {
             tasksViewModel.getTask(id).observe(this, Observer<Task> { it ->
                 it?.let {
-                    et_title.setText(it.title)
-                    et_description.setText(it.description)
+                    et_title.setText(it.name)
+                    et_description.setText(it.detail)
                 }
             })
         }

@@ -29,8 +29,8 @@ class TaskAdapter(private val tasks: List<Task>, private val listener: (Task) ->
         fun bind(task: Task, listener: (Task) -> Unit) {
             with(task) {
                 itemView.setOnClickListener({ listener(task) })
-                itemView.tv_title.text = title
-                itemView.tv_description.text = description
+                itemView.tv_title.text = name
+                itemView.tv_description.text = detail
             }
         }
     }
