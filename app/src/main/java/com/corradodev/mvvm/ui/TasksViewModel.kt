@@ -1,7 +1,9 @@
 package com.corradodev.mvvm.ui
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.corradodev.mvvm.data.RepositoryResponse
 import com.corradodev.mvvm.data.Task
 import com.corradodev.mvvm.data.TaskRepository
 import javax.inject.Inject
@@ -11,19 +13,7 @@ import javax.inject.Inject
  */
 
 class TasksViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
-    fun getTasks(): LiveData<List<Task>> {
+    fun getTasks(): MutableLiveData<RepositoryResponse<List<Task>>> {
         return taskRepository.findAll();
-    }
-
-    fun getTask(id: Long): LiveData<Task> {
-        return taskRepository.find(id);
-    }
-
-    fun saveTask(task: Task) {
-        taskRepository.save(task)
-    }
-
-    fun deleteTask(task: Task) {
-        taskRepository.delete(task)
     }
 }

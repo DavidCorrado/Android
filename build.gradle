@@ -7,6 +7,7 @@ buildscript {
     ext.daggerVersion = '2.13'
     ext.archVersion = '1.0.0'
     ext.retrofitVersion = '2.3.0'
+    ext.retrofitLoggingVersion = '3.9.0'
     ext.ankoVersion = '0.10.4'
     ext.constraintVersion = '1.0.2'
     ext.rxAndroidVersion = '2.0.1'

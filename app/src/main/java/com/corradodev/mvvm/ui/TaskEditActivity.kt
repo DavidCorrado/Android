@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.corradodev.mvvm.R
+import com.corradodev.mvvm.data.RepositoryResponse
 import com.corradodev.mvvm.data.Task
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_task_edit.*
@@ -29,18 +30,19 @@ private const val INTENT_TASK_ID = "INTENT_TASK_ID"
 private const val INVALID_TASK_ID = 0L
 
 class TaskEditActivity : DaggerAppCompatActivity() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var tasksViewModel: TasksViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var taskViewModel: TaskViewModel
     private var id: Long = INVALID_TASK_ID
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tasksViewModel = ViewModelProviders.of(this, viewModelFactory).get(TasksViewModel::class.java)
+        taskViewModel = ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
         setContentView(R.layout.activity_task_edit)
 
         id = intent.getLongExtra(INTENT_TASK_ID, INVALID_TASK_ID)
         if (savedInstanceState == null && id != INVALID_TASK_ID) {
-            tasksViewModel.getTask(id).observe(this, Observer<Task> { it ->
-                it?.let {
+            taskViewModel.getTask(id).observe(this, Observer<RepositoryResponse<Task>> {
+                it?.data?.let {
                     et_title.setText(it.name)
                     et_description.setText(it.detail)
                 }
@@ -60,14 +62,14 @@ class TaskEditActivity : DaggerAppCompatActivity() {
         val task = Task(id, et_title.text.toString(), et_description.text.toString())
         when (item.itemId) {
             R.id.action_done -> {
-                tasksViewModel.saveTask(task)
+                taskViewModel.saveTask(task)
                 finish()
                 return true
             }
             R.id.action_delete -> {
                 alert(Appcompat, getString(R.string.delete_task_question)) {
                     positiveButton(R.string.delete) {
-                        tasksViewModel.deleteTask(task)
+                        taskViewModel.deleteTask(task)
                         finish()
                     }
                     cancelButton { }
