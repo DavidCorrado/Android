@@ -31,23 +31,23 @@ dependencies {
     implementation "com.android.support:cardview-v7:$supportVersion"
 
     //Architecture
-    kapt "android.arch.lifecycle:compiler:$archVersion"
     implementation "android.arch.lifecycle:extensions:$archVersion"
 
     //Room
-    implementation "android.arch.persistence.room:runtime:$archVersion"
-    kapt "android.arch.persistence.room:compiler:$archVersion"
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
+    kapt "android.arch.persistence.room:compiler:$roomVersion"
 
     //RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "android.arch.persistence.room:rxjava2:$archVersion"
+    implementation "android.arch.persistence.room:rxjava2:$roomVersion"
 
     //Retrofit
     implementation "com.google.code.gson:gson:$gsonVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$retrofitLoggingVersion"
+
     //Dagger
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     implementation "com.google.dagger:dagger:$daggerVersion"
