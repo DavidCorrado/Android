@@ -9,8 +9,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.corradodev.mvvm.R
-import com.corradodev.mvvm.data.RepositoryResponse
-import com.corradodev.mvvm.data.Task
+import com.corradodev.mvvm.data.RepositoryListener
+import com.corradodev.mvvm.data.Resource
+import com.corradodev.mvvm.data.ResourceStatus
+import com.corradodev.mvvm.data.task.Task
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_task_edit.*
 import org.jetbrains.anko.alert
@@ -41,7 +43,7 @@ class TaskEditActivity : DaggerAppCompatActivity() {
 
         id = intent.getLongExtra(INTENT_TASK_ID, INVALID_TASK_ID)
         if (savedInstanceState == null && id != INVALID_TASK_ID) {
-            taskViewModel.getTask(id).observe(this, Observer<RepositoryResponse<Task>> {
+            taskViewModel.getTask(id).observe(this, Observer<Resource<Task>> {
                 it?.data?.let {
                     et_title.setText(it.name)
                     et_description.setText(it.detail)
@@ -62,15 +64,31 @@ class TaskEditActivity : DaggerAppCompatActivity() {
         val task = Task(id, et_title.text.toString(), et_description.text.toString())
         when (item.itemId) {
             R.id.action_done -> {
-                taskViewModel.saveTask(task)
-                finish()
+                taskViewModel.saveTask(task, object: RepositoryListener {
+                    override fun response(response: Resource<Unit>) {
+                        if (response.status == ResourceStatus.SUCCESS){
+                            finish()
+                        } else {
+                            alert(Appcompat, response.message).show()
+                        }
+                    }
+
+                })
                 return true
             }
             R.id.action_delete -> {
                 alert(Appcompat, getString(R.string.delete_task_question)) {
                     positiveButton(R.string.delete) {
-                        taskViewModel.deleteTask(task)
-                        finish()
+                        taskViewModel.deleteTask(task, object: RepositoryListener {
+                            override fun response(response: Resource<Unit>) {
+                                if (response.status == ResourceStatus.SUCCESS){
+                                    finish()
+                                } else {
+                                    alert(Appcompat, response.message).show()
+                                }
+                            }
+
+                        })
                     }
                     cancelButton { }
                 }.show()

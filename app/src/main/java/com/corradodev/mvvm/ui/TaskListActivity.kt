@@ -6,8 +6,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.corradodev.mvvm.R
-import com.corradodev.mvvm.data.RepositoryResponse
-import com.corradodev.mvvm.data.Task
+import com.corradodev.mvvm.data.Resource
+import com.corradodev.mvvm.data.task.Task
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_task_list.*
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class TaskListActivity : DaggerAppCompatActivity() {
 
         recycler_view.layoutManager = LinearLayoutManager(this)
 
-        tasksViewModel.getTasks().observe(this, Observer<RepositoryResponse<List<Task>>> {
+        tasksViewModel.getTasks().observe(this, Observer<Resource<List<Task>>> {
             it?.data?.let {
                 recycler_view.adapter = TaskAdapter(it) {
                     startActivity(taskEditIntent(it))
