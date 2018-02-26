@@ -6,12 +6,12 @@ import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
 import com.corradodev.mvvm.data.api.APIResponse
 
-abstract class FetchResource<RequestType> @MainThread
+abstract class FetchResource<ResultType> @MainThread
 internal constructor(private val appExecutors: AppExecutors) {
 
-    private val result = MediatorLiveData<Resource<RequestType>>()
+    private val result = MediatorLiveData<Resource<ResultType>>()
 
-    fun start(): LiveData<Resource<RequestType>> {
+    fun start(): LiveData<Resource<ResultType>> {
         result.value = Resource.loading(null)
         val dbSource = databaseLoad()
         result.addSource(dbSource) { data ->
@@ -25,12 +25,12 @@ internal constructor(private val appExecutors: AppExecutors) {
         return result
     }
 
-    private fun networkFetch(dbSource: LiveData<RequestType>) {
+    private fun networkFetch(dbSource: LiveData<ResultType>) {
         val apiResponse = networkCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource) { newData -> result.setValue(Resource.loading(newData)) }
-        result.addSource<APIResponse<RequestType>>(apiResponse) { response ->
-            result.removeSource<APIResponse<RequestType>>(apiResponse)
+        result.addSource<APIResponse<ResultType>>(apiResponse) { response ->
+            result.removeSource<APIResponse<ResultType>>(apiResponse)
             result.removeSource(dbSource)
             if (response?.isSuccessful == true) {
                 appExecutors.diskIO().execute({
@@ -54,14 +54,14 @@ internal constructor(private val appExecutors: AppExecutors) {
     }
 
     @WorkerThread
-    protected abstract fun databaseSave(item: RequestType)
+    protected abstract fun databaseSave(item: ResultType)
 
     @MainThread
-    protected abstract fun shouldFetch(data: RequestType?): Boolean
+    protected abstract fun shouldFetch(data: ResultType?): Boolean
 
     @MainThread
-    protected abstract fun databaseLoad(): LiveData<RequestType>
+    protected abstract fun databaseLoad(): LiveData<ResultType>
 
     @MainThread
-    protected abstract fun networkCall(): LiveData<APIResponse<RequestType>>
+    protected abstract fun networkCall(): LiveData<APIResponse<ResultType>>
 }
