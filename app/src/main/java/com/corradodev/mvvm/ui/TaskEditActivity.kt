@@ -20,22 +20,25 @@ import org.jetbrains.anko.appcompat.v7.Appcompat
 import org.jetbrains.anko.cancelButton
 import javax.inject.Inject
 
-fun Context.taskEditIntent(task: Task?): Intent {
-    return Intent(this, TaskEditActivity::class.java).apply {
-        if (task != null) {
-            putExtra(INTENT_TASK_ID, task.id)
-        }
-    }
-}
-
-private const val INTENT_TASK_ID = "INTENT_TASK_ID"
-private const val INVALID_TASK_ID = 0L
-
 class TaskEditActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var taskViewModel: TaskViewModel
+    private lateinit var taskViewModel: TaskViewModel
     private var id: Long = INVALID_TASK_ID
+
+    companion object {
+        fun newInstance(context: Context, task: Task?): Intent {
+            return Intent(context, TaskEditActivity::class.java).apply {
+                if (task != null) {
+                    putExtra(INTENT_TASK_ID, task.id)
+                }
+            }
+        }
+
+        private const val INTENT_TASK_ID = "INTENT_TASK_ID"
+        private const val INVALID_TASK_ID = 0L
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         taskViewModel = ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
@@ -64,9 +67,9 @@ class TaskEditActivity : DaggerAppCompatActivity() {
         val task = Task(id, et_title.text.toString(), et_description.text.toString())
         when (item.itemId) {
             R.id.action_done -> {
-                taskViewModel.saveTask(task, object: RepositoryListener {
+                taskViewModel.saveTask(task, object : RepositoryListener {
                     override fun response(response: Resource<Unit>) {
-                        if (response.status == ResourceStatus.SUCCESS){
+                        if (response.status == ResourceStatus.SUCCESS) {
                             finish()
                         } else {
                             alert(Appcompat, response.message).show()
@@ -79,9 +82,9 @@ class TaskEditActivity : DaggerAppCompatActivity() {
             R.id.action_delete -> {
                 alert(Appcompat, getString(R.string.delete_task_question)) {
                     positiveButton(R.string.delete) {
-                        taskViewModel.deleteTask(task, object: RepositoryListener {
+                        taskViewModel.deleteTask(task, object : RepositoryListener {
                             override fun response(response: Resource<Unit>) {
-                                if (response.status == ResourceStatus.SUCCESS){
+                                if (response.status == ResourceStatus.SUCCESS) {
                                     finish()
                                 } else {
                                     alert(Appcompat, response.message).show()

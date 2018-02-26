@@ -2,27 +2,24 @@ package com.corradodev.mvvm.data
 
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-abstract class DeleteResource @MainThread
+abstract class UpdateResource<ResultType> @MainThread
 internal constructor(private val appExecutors: AppExecutors, private val responseListener: RepositoryListener) {
-    init {
-        updateFromNetwork()
-    }
-
-    private fun updateFromNetwork() {
-        val apiResponse = createCall()
-        apiResponse.enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+    fun start() {
+        val apiResponse = networkUpdate()
+        apiResponse.enqueue(object : Callback<ResultType> {
+            override fun onFailure(call: Call<ResultType>?, t: Throwable?) {
                 responseListener.response(Resource.error(null, null))
             }
 
-            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
+            override fun onResponse(call: Call<ResultType>?, response: Response<ResultType>?) {
                 appExecutors.diskIO().execute {
-                    deleteCallResult()
+                    response?.body()?.let {
+                        databaseUpdate(it)
+                    }
                 }
                 responseListener.response(Resource.success(null))
             }
@@ -31,8 +28,8 @@ internal constructor(private val appExecutors: AppExecutors, private val respons
     }
 
     @WorkerThread
-    protected abstract fun deleteCallResult()
+    protected abstract fun databaseUpdate(item: ResultType)
 
     @MainThread
-    protected abstract fun createCall(): Call<ResponseBody>
+    protected abstract fun networkUpdate(): Call<ResultType>
 }

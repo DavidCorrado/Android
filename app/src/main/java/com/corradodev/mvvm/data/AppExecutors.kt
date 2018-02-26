@@ -9,19 +9,14 @@ import javax.inject.Singleton
 
 
 @Singleton
-class AppExecutors(private val diskIO: Executor, private val networkIO: Executor, private val mainThread: Executor) {
+class AppExecutors(private val diskIO: Executor, private val mainThread: Executor) {
 
     @Inject
-    constructor() : this(Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(3),
-            MainThreadExecutor()) {
-    }
+    constructor() : this(Executors.newSingleThreadExecutor(),
+            MainThreadExecutor())
 
     fun diskIO(): Executor {
         return diskIO
-    }
-
-    fun networkIO(): Executor {
-        return networkIO
     }
 
     fun mainThread(): Executor {

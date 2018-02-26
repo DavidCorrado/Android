@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import com.corradodev.mvvm.data.*
 import com.corradodev.mvvm.data.api.APIResponse
 import com.corradodev.mvvm.data.api.APIService
-import kotlinx.coroutines.experimental.async
 import okhttp3.ResponseBody
 import retrofit2.Call
 import javax.inject.Inject
@@ -14,8 +13,8 @@ import javax.inject.Singleton
 class TaskRepository @Inject constructor(private val taskDAO: TaskDAO, private val apiService: APIService, private val appExecutors: AppExecutors) : Repository<Task> {
 
     override fun find(id: Long): LiveData<Resource<Task>> {
-        return object : FetchResource<Task, Task>(appExecutors) {
-            override fun saveCallResult(item: Task) {
+        return object : FetchResource<Task>(appExecutors) {
+            override fun databaseSave(item: Task) {
                 taskDAO.save(item)
             }
 
@@ -23,74 +22,69 @@ class TaskRepository @Inject constructor(private val taskDAO: TaskDAO, private v
                 return true
             }
 
-            override fun loadFromDb(): LiveData<Task> {
+            override fun databaseLoad(): LiveData<Task> {
                 return taskDAO.find(id)
             }
 
-            override fun createCall(): LiveData<APIResponse<Task>> {
+            override fun networkCall(): LiveData<APIResponse<Task>> {
                 return apiService.findTask(id)
             }
-
-        }.asLiveData()
+        }.start()
     }
 
     override fun findAll(): LiveData<Resource<List<Task>>> {
-        return object : FetchResource<List<Task>, List<Task>>(appExecutors) {
-            override fun saveCallResult(item: List<Task>) {
-                item.let {
-                    taskDAO.saveAll(it)
-                }
+        return object : FetchResource<List<Task>>(appExecutors) {
+            override fun databaseSave(item: List<Task>) {
+                taskDAO.saveAll(item)
             }
 
             override fun shouldFetch(data: List<Task>?): Boolean {
                 return true
             }
 
-            override fun loadFromDb(): LiveData<List<Task>> {
+            override fun databaseLoad(): LiveData<List<Task>> {
                 return taskDAO.findAll()
             }
 
-            override fun createCall(): LiveData<APIResponse<List<Task>>> {
+            override fun networkCall(): LiveData<APIResponse<List<Task>>> {
                 return apiService.findTasks()
             }
-
-        }.asLiveData()
+        }.start()
     }
 
-    override fun save(data: Task, responseListener: RepositoryListener) {
-        async {
-            val response = APIResponse(apiService.saveTask(data).execute())
-            if (response.isSuccessful && response.body != null) {
-                taskDAO.save(response.body)
-                responseListener.response(Resource.success(null))
-            } else {
-                responseListener.response(Resource.error(response.errorMessage, null))
+    override fun save(data: Task, repositoryListener: RepositoryListener) {
+        object : UpdateResource<Task>(appExecutors, repositoryListener) {
+            override fun databaseUpdate(item: Task) {
+                taskDAO.save(item)
             }
-        }
 
+            override fun networkUpdate(): Call<Task> {
+                return apiService.saveTask(data)
+            }
+        }.start()
     }
 
-    override fun delete(data: Task, responseListener: RepositoryListener) {
-        object : DeleteResource(appExecutors, responseListener) {
-            override fun deleteCallResult() {
+    override fun delete(data: Task, repositoryListener: RepositoryListener) {
+        object : UpdateResource<ResponseBody>(appExecutors, repositoryListener) {
+            override fun databaseUpdate(item: ResponseBody) {
                 taskDAO.delete(data)
             }
 
-            override fun createCall(): Call<ResponseBody> {
+            override fun networkUpdate(): Call<ResponseBody> {
                 return apiService.deleteTask(data.id)
             }
-        }
+        }.start()
     }
 
-    override fun deleteAll(responseListener: RepositoryListener) {
-        object : DeleteResource(appExecutors, responseListener) {
-            override fun deleteCallResult() {
+    override fun deleteAll(repositoryListener: RepositoryListener) {
+        object : UpdateResource<ResponseBody>(appExecutors, repositoryListener) {
+            override fun databaseUpdate(item: ResponseBody) {
                 taskDAO.deleteAll()
             }
 
-            override fun createCall(): Call<ResponseBody> {
+            override fun networkUpdate(): Call<ResponseBody> {
                 return apiService.deleteTasks()
             }
-        }
+        }.start()
     }
 }

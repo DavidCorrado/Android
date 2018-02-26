@@ -7,11 +7,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-
-/**
- * Created by davidcorrado on 12/6/17.
- */
-
 @Module
 abstract class ActivityBindingModule {
 

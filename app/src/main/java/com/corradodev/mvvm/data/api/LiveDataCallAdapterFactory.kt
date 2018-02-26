@@ -6,11 +6,6 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
-
-/**
- * Created by davidcorrado on 2/14/18.
- */
-
 class LiveDataCallAdapterFactory : CallAdapter.Factory() {
 
     override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
@@ -25,7 +20,7 @@ class LiveDataCallAdapterFactory : CallAdapter.Factory() {
         if (observableType !is ParameterizedType) {
             throw IllegalArgumentException("resource must be parameterized")
         }
-        val bodyType = CallAdapter.Factory.getParameterUpperBound(0, observableType as ParameterizedType)
+        val bodyType = CallAdapter.Factory.getParameterUpperBound(0, observableType)
         return LiveDataCallAdapter<Type>(bodyType)
     }
 }

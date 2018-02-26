@@ -18,7 +18,7 @@ interface TaskDAO {
     fun save(task: Task)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun saveAll(tasks: List<Task>)
+    fun saveAll(tasks: List<Task>)
 
     @Delete
     fun delete(task: Task)

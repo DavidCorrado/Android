@@ -1,14 +1,9 @@
 package com.corradodev.mvvm
 
 import com.corradodev.mvvm.di.AppComponent
-import com.corradodev.mvvm.di.AppModule
 import com.corradodev.mvvm.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
-
-/**
- * Created by davidcorrado on 11/17/17.
- */
 
 class App : DaggerApplication() {
 
@@ -17,7 +12,7 @@ class App : DaggerApplication() {
     }
 
     override fun onCreate() {
-        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+        appComponent = DaggerAppComponent.builder().build()
         super.onCreate()
     }
 

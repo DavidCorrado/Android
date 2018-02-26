@@ -16,7 +16,7 @@ import javax.inject.Inject
 class TaskListActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var tasksViewModel: TasksViewModel
+    private lateinit var tasksViewModel: TasksViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +28,13 @@ class TaskListActivity : DaggerAppCompatActivity() {
         tasksViewModel.getTasks().observe(this, Observer<Resource<List<Task>>> {
             it?.data?.let {
                 recycler_view.adapter = TaskAdapter(it) {
-                    startActivity(taskEditIntent(it))
+                    startActivity(TaskEditActivity.newInstance(this, it))
                 }
             }
         })
 
         fab_add.setOnClickListener {
-            startActivity(taskEditIntent(null))
+            startActivity(TaskEditActivity.newInstance(this, null))
         }
     }
 }

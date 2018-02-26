@@ -72,7 +72,4 @@ dependencies {
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
 }
-
-kotlin { experimental { coroutines 'enable' } }

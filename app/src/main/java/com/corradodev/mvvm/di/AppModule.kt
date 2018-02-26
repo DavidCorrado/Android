@@ -16,11 +16,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-
-/**
- * Created by davidcorrado on 11/17/17.
- */
-
 @Module
 class AppModule(private val context: Context) {
 
@@ -39,13 +34,13 @@ class AppModule(private val context: Context) {
     fun providesTaskDAO(database: AppDatabase) = database.taskDAO()
 
     @Provides
-    fun providesTaskRepo(taskDAO: TaskDAO, apiService: APIService, appExecutors: AppExecutors) = TaskRepository(taskDAO, apiService,appExecutors)
+    fun providesTaskRepo(taskDAO: TaskDAO, apiService: APIService, appExecutors: AppExecutors) = TaskRepository(taskDAO, apiService, appExecutors)
 
     @Singleton
     @Provides
     fun providesRetrofit(): APIService {
         val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        logging.level = HttpLoggingInterceptor.Level.BODY
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)  // <-- this is the important line!
