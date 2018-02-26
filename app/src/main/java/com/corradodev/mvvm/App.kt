@@ -1,6 +1,7 @@
 package com.corradodev.mvvm
 
 import com.corradodev.mvvm.di.AppComponent
+import com.corradodev.mvvm.di.AppModule
 import com.corradodev.mvvm.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
@@ -12,7 +13,7 @@ class App : DaggerApplication() {
     }
 
     override fun onCreate() {
-        appComponent = DaggerAppComponent.builder().build()
+        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
         super.onCreate()
     }
 
