@@ -3,6 +3,7 @@ package com.corradodev.mvvm.di
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.corradodev.mvvm.data.AppExecutors
+import com.corradodev.mvvm.data.api.APIResponseAdapter
 import com.corradodev.mvvm.data.api.APIService
 import com.corradodev.mvvm.data.api.LiveDataCallAdapterFactory
 import com.corradodev.mvvm.data.db.AppDatabase
@@ -48,6 +49,7 @@ class AppModule(private val context: Context) {
         val retrofit = Retrofit.Builder()
                 .baseUrl("https://davidcorrado-todo.herokuapp.com/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(APIResponseAdapter.APIResponseAdapterFactory())
                 .addCallAdapterFactory(LiveDataCallAdapterFactory())
                 .client(httpClient.build())
                 .build()

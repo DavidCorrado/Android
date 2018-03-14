@@ -3,7 +3,9 @@ package com.corradodev.mvvm.data.task
 import android.arch.lifecycle.LiveData
 import com.corradodev.mvvm.data.*
 import com.corradodev.mvvm.data.api.APIResponse
+import com.corradodev.mvvm.data.api.APIResponseAdapter
 import com.corradodev.mvvm.data.api.APIService
+import com.corradodev.mvvm.data.api.MyCall
 import okhttp3.ResponseBody
 import retrofit2.Call
 import javax.inject.Inject
@@ -58,7 +60,7 @@ class TaskRepository @Inject constructor(private val taskDAO: TaskDAO, private v
                 taskDAO.save(item)
             }
 
-            override fun networkUpdate(): Call<Task> {
+            override fun networkUpdate(): MyCall<Task> {
                 return apiService.saveTask(data)
             }
         }.start()
@@ -70,7 +72,7 @@ class TaskRepository @Inject constructor(private val taskDAO: TaskDAO, private v
                 taskDAO.delete(data)
             }
 
-            override fun networkUpdate(): Call<ResponseBody> {
+            override fun networkUpdate(): MyCall<ResponseBody> {
                 return apiService.deleteTask(data.id)
             }
         }.start()
@@ -82,7 +84,7 @@ class TaskRepository @Inject constructor(private val taskDAO: TaskDAO, private v
                 taskDAO.deleteAll()
             }
 
-            override fun networkUpdate(): Call<ResponseBody> {
+            override fun networkUpdate(): MyCall<ResponseBody> {
                 return apiService.deleteTasks()
             }
         }.start()

@@ -14,11 +14,11 @@ interface APIService {
     fun findTasks(): LiveData<APIResponse<List<Task>>>
 
     @POST("tasks")
-    fun saveTask(@Body task: Task): Call<Task>
+    fun saveTask(@Body task: Task): MyCall<Task>
 
     @DELETE("tasks/{id}")
-    fun deleteTask(@Path("id") id: Long): Call<ResponseBody>
+    fun deleteTask(@Path("id") id: Long): MyCall<ResponseBody>
 
     @DELETE("tasks")
-    fun deleteTasks(): Call<ResponseBody>
+    fun deleteTasks(): MyCall<ResponseBody>
 }
