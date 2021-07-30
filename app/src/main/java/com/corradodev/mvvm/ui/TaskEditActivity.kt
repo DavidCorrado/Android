@@ -8,7 +8,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.corradodev.mvvm.R
 import com.corradodev.mvvm.data.RepositoryListener
 import com.corradodev.mvvm.data.Resource
@@ -39,7 +38,7 @@ class TaskEditActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        taskViewModel = ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel::class.java)
+        taskViewModel = ViewModelProvider(this, viewModelFactory).get(TaskViewModel::class.java)
         setContentView(R.layout.activity_task_edit)
 
         id = intent.getLongExtra(INTENT_TASK_ID, INVALID_TASK_ID)

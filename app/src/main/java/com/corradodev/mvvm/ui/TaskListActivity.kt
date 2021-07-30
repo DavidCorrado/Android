@@ -1,9 +1,8 @@
 package com.corradodev.mvvm.ui
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.corradodev.mvvm.R
 import com.corradodev.mvvm.data.Resource
@@ -20,7 +19,7 @@ class TaskListActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tasksViewModel = ViewModelProviders.of(this, viewModelFactory).get(TasksViewModel::class.java)
+        tasksViewModel = ViewModelProvider(this, viewModelFactory).get(TasksViewModel::class.java)
         setContentView(R.layout.activity_task_list)
 
         recycler_view.layoutManager =
