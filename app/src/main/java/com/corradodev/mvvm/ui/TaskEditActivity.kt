@@ -13,8 +13,8 @@ import com.corradodev.mvvm.data.RepositoryListener
 import com.corradodev.mvvm.data.Resource
 import com.corradodev.mvvm.data.ResourceStatus
 import com.corradodev.mvvm.data.task.Task
+import com.corradodev.mvvm.databinding.ActivityTaskEditBinding
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_task_edit.*
 import javax.inject.Inject
 
 class TaskEditActivity : DaggerAppCompatActivity() {
@@ -22,6 +22,7 @@ class TaskEditActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var taskViewModel: TaskViewModel
     private var id: Long = INVALID_TASK_ID
+    private lateinit var binding: ActivityTaskEditBinding
 
     companion object {
         fun newInstance(context: Context, task: Task?): Intent {
@@ -39,14 +40,15 @@ class TaskEditActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         taskViewModel = ViewModelProvider(this, viewModelFactory).get(TaskViewModel::class.java)
-        setContentView(R.layout.activity_task_edit)
+        binding = ActivityTaskEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         id = intent.getLongExtra(INTENT_TASK_ID, INVALID_TASK_ID)
         if (savedInstanceState == null && id != INVALID_TASK_ID) {
             taskViewModel.getTask(id).observe(this, Observer<Resource<Task>> {
                 it?.data?.let {
-                    et_title.setText(it.name)
-                    et_description.setText(it.detail)
+                    binding.etTitle.setText(it.name)
+                    binding.etDescription.setText(it.detail)
                 }
             })
         }
@@ -61,7 +63,7 @@ class TaskEditActivity : DaggerAppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val task = Task(id, et_title.text.toString(), et_description.text.toString())
+        val task = Task(id, binding.etTitle.text.toString(), binding.etDescription.text.toString())
         when (item.itemId) {
             R.id.action_done -> {
                 taskViewModel.saveTask(task, object : RepositoryListener {
