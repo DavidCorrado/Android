@@ -1,13 +1,12 @@
 package com.corradodev.mvvm.data.api
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.warn
 import retrofit2.Response
 import java.io.IOException
 
-class APIResponse<T> : AnkoLogger {
+class APIResponse<T> {
     private val code: Int
     val body: T?
     var errorMessage: String? = null
@@ -30,7 +29,7 @@ class APIResponse<T> : AnkoLogger {
             try {
                 errorMessage = Gson().fromJson(response.errorBody().toString(), JsonObject::class.java).get("message").asString
             } catch (e: Exception) {
-                warn("Could not parse error message")
+                Log.w("APIResponse", "Could not parse error message")
             }
             body = null
         }

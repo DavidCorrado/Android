@@ -1,13 +1,14 @@
 package com.corradodev.mvvm.ui
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.corradodev.mvvm.R
 import com.corradodev.mvvm.data.RepositoryListener
 import com.corradodev.mvvm.data.Resource
@@ -15,9 +16,6 @@ import com.corradodev.mvvm.data.ResourceStatus
 import com.corradodev.mvvm.data.task.Task
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_task_edit.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.appcompat.v7.Appcompat
-import org.jetbrains.anko.cancelButton
 import javax.inject.Inject
 
 class TaskEditActivity : DaggerAppCompatActivity() {
@@ -72,7 +70,8 @@ class TaskEditActivity : DaggerAppCompatActivity() {
                         if (response.status == ResourceStatus.SUCCESS) {
                             finish()
                         } else {
-                            alert(Appcompat, response.message).show()
+                            AlertDialog.Builder(this@TaskEditActivity).setMessage(response.message)
+                                .show()
                         }
                     }
 
@@ -80,21 +79,23 @@ class TaskEditActivity : DaggerAppCompatActivity() {
                 return true
             }
             R.id.action_delete -> {
-                alert(Appcompat, getString(R.string.delete_task_question)) {
-                    positiveButton(R.string.delete) {
+                AlertDialog.Builder(this).setMessage(R.string.delete_task_question)
+                    .setPositiveButton(
+                        R.string.delete
+                    ) { _, _ ->
                         taskViewModel.deleteTask(task, object : RepositoryListener {
                             override fun response(response: Resource<Unit>) {
                                 if (response.status == ResourceStatus.SUCCESS) {
                                     finish()
                                 } else {
-                                    alert(Appcompat, response.message).show()
+                                    AlertDialog.Builder(this@TaskEditActivity)
+                                        .setMessage(response.message).show()
                                 }
                             }
 
                         })
-                    }
-                    cancelButton { }
-                }.show()
+                    }.setNegativeButton(R.string.cancel) { _, _ -> }
+                    .show()
                 return true
             }
         }
