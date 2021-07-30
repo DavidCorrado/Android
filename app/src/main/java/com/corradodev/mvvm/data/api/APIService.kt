@@ -1,6 +1,6 @@
 package com.corradodev.mvvm.data.api
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.corradodev.mvvm.data.task.Task
 import okhttp3.ResponseBody
 import retrofit2.Call

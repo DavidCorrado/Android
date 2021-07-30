@@ -1,7 +1,7 @@
 package com.corradodev.mvvm.data.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.corradodev.mvvm.data.task.Task
 import com.corradodev.mvvm.data.task.TaskDAO
 

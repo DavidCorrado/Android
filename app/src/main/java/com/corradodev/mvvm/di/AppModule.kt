@@ -1,6 +1,6 @@
 package com.corradodev.mvvm.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.corradodev.mvvm.data.AppExecutors
 import com.corradodev.mvvm.data.api.APIResponseAdapter

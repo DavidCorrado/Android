@@ -1,6 +1,6 @@
 package com.corradodev.mvvm.data.task
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.corradodev.mvvm.data.*
 import com.corradodev.mvvm.data.api.APIResponse
 import com.corradodev.mvvm.data.api.APIResponseAdapter

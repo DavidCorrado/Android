@@ -1,10 +1,10 @@
 package com.corradodev.mvvm.ui
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.corradodev.mvvm.R
 import com.corradodev.mvvm.data.Resource
 import com.corradodev.mvvm.data.task.Task
@@ -23,7 +23,8 @@ class TaskListActivity : DaggerAppCompatActivity() {
         tasksViewModel = ViewModelProviders.of(this, viewModelFactory).get(TasksViewModel::class.java)
         setContentView(R.layout.activity_task_list)
 
-        recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.layoutManager =
+            LinearLayoutManager(this)
 
         tasksViewModel.getTasks().observe(this, Observer<Resource<List<Task>>> {
             it?.data?.let {

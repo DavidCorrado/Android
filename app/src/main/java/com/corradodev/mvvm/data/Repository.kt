@@ -1,6 +1,6 @@
 package com.corradodev.mvvm.data
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 
 interface Repository<T> {
     fun find(id: Long): LiveData<Resource<T>>

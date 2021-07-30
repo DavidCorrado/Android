@@ -1,7 +1,7 @@
 package com.corradodev.mvvm.data
 
-import android.support.annotation.MainThread
-import android.support.annotation.WorkerThread
+import androidx.annotation.MainThread
+import androidx.annotation.WorkerThread
 import com.corradodev.mvvm.data.api.APIResponse
 import com.corradodev.mvvm.data.api.APIResponseCallback
 import com.corradodev.mvvm.data.api.MyCall

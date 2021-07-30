@@ -1,7 +1,7 @@
 package com.corradodev.mvvm.ui
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.corradodev.mvvm.data.RepositoryListener
 import com.corradodev.mvvm.data.Resource
 import com.corradodev.mvvm.data.task.Task

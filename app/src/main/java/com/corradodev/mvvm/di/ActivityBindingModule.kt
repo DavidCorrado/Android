@@ -1,6 +1,6 @@
 package com.corradodev.mvvm.di
 
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import com.corradodev.mvvm.ui.TaskEditActivity
 import com.corradodev.mvvm.ui.TaskListActivity
 import dagger.Binds
