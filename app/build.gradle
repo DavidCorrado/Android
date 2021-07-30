@@ -44,7 +44,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$retrofitLoggingVersion"
 
     //Dagger
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     implementation "com.google.dagger:dagger:$daggerVersion"
 
     //Dagger Android
