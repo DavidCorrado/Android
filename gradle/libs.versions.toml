@@ -1,0 +1,54 @@
+[versions]
+kotlin = "1.5.20"
+androidBuildTools = "7.0.0"
+
+androidx-core = "1.6.0"
+androidx-appcompat = "1.3.1"
+androidx-constraint = "2.0.4"
+androidx-recyclerview = "1.2.1"
+androidx-lifecycle = "2.3.1"
+androidx-room = "2.3.0"
+
+material = "1.4.0"
+
+gson = "2.8.6"
+
+retrofit-core = "2.9.0"
+retrofit-logging = "4.9.1"
+
+dagger = "2.38"
+
+testing-junit = "4.13.2"
+testing-androidx-junit = "1.1.3"
+testing-espresso-core = "3.4.0"
+
+[libraries]
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidBuildTools" }
+
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-constraint = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraint" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
+androidx-room-core = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
+androidx-room-kapt = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit-core" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit-core" }
+retrofit-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "retrofit-logging" }
+
+dagger-core = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-kapt = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+dagger-android-core = { module = "com.google.dagger:dagger-android", version.ref = "dagger" }
+dagger-android-support = { module = "com.google.dagger:dagger-android-support", version.ref = "dagger" }
+dagger-android-kapt = { module = "com.google.dagger:dagger-android-processor", version.ref = "dagger" }
+
+testing-junit = { module = "junit:junit", version.ref = "testing-junit" }
+testing-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "testing-androidx-junit" }
+testing-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "testing-espresso-core" }
