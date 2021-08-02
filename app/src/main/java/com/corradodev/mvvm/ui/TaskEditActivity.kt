@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.corradodev.mvvm.R
@@ -14,12 +15,10 @@ import com.corradodev.mvvm.data.Resource
 import com.corradodev.mvvm.data.ResourceStatus
 import com.corradodev.mvvm.data.task.Task
 import com.corradodev.mvvm.databinding.ActivityTaskEditBinding
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class TaskEditActivity : DaggerAppCompatActivity() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class TaskEditActivity : AppCompatActivity() {
     private lateinit var taskViewModel: TaskViewModel
     private var id: Long = INVALID_TASK_ID
     private lateinit var binding: ActivityTaskEditBinding
@@ -39,7 +38,7 @@ class TaskEditActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        taskViewModel = ViewModelProvider(this, viewModelFactory).get(TaskViewModel::class.java)
+        taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
         binding = ActivityTaskEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

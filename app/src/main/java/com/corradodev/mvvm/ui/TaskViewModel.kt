@@ -6,8 +6,10 @@ import com.corradodev.mvvm.data.RepositoryListener
 import com.corradodev.mvvm.data.Resource
 import com.corradodev.mvvm.data.task.Task
 import com.corradodev.mvvm.data.task.TaskRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class TaskViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
     fun getTask(id: Long): LiveData<Resource<Task>> {
         return taskRepository.find(id)

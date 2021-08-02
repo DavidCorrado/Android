@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -50,11 +51,8 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.retrofit.logging)
 
-    implementation(libs.dagger.core)
-    kapt(libs.dagger.kapt)
-    implementation(libs.dagger.android.core)
-    implementation(libs.dagger.android.support)
-    kapt(libs.dagger.android.kapt)
+    implementation(libs.hilt.core)
+    kapt(libs.hilt.kapt)
 
     testImplementation(libs.testing.junit)
 
