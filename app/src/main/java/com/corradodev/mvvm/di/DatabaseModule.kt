@@ -17,7 +17,4 @@ object DatabaseModule {
     @Provides
     fun providesAppDatabase(@ApplicationContext appContext: Context): AppDatabase =
         Room.databaseBuilder(appContext, AppDatabase::class.java, "app-db").build()
-
-    @Provides
-    fun providesTaskDAO(database: AppDatabase) = database.taskDAO()
 }

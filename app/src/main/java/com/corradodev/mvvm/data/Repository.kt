@@ -1,11 +1,11 @@
 package com.corradodev.mvvm.data
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 
 interface Repository<T> {
-    fun find(id: Long): LiveData<Resource<T>>
-    fun findAll(): LiveData<Resource<List<T>>>
-    fun save(data: T, repositoryListener: RepositoryListener)
-    fun delete(data: T, repositoryListener: RepositoryListener)
-    fun deleteAll(repositoryListener: RepositoryListener)
+    fun find(id: Long): Flow<Result<T>>
+    fun findAll(): Flow<Result<List<T>>>
+    suspend fun save(data: T): Result<Unit>
+    suspend fun delete(data: T): Result<Unit>
+    suspend fun deleteAll(): Result<Unit>
 }

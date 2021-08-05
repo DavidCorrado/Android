@@ -7,15 +7,17 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.corradodev.mvvm.R
-import com.corradodev.mvvm.data.RepositoryListener
-import com.corradodev.mvvm.data.Resource
-import com.corradodev.mvvm.data.ResourceStatus
+import com.corradodev.mvvm.data.Result
 import com.corradodev.mvvm.data.task.Task
 import com.corradodev.mvvm.databinding.ActivityTaskEditBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TaskEditActivity : AppCompatActivity() {
@@ -44,12 +46,18 @@ class TaskEditActivity : AppCompatActivity() {
 
         id = intent.getLongExtra(INTENT_TASK_ID, INVALID_TASK_ID)
         if (savedInstanceState == null && id != INVALID_TASK_ID) {
-            taskViewModel.getTask(id).observe(this, Observer<Resource<Task>> {
-                it?.data?.let {
-                    binding.etTitle.setText(it.name)
-                    binding.etDescription.setText(it.detail)
+            taskViewModel.loadTask(id)
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    taskViewModel.uiState.collect { result ->
+                        if (result is Result.Success) {
+                            val task = result.data
+                            binding.etTitle.setText(task.name)
+                            binding.etDescription.setText(task.detail)
+                        }
+                    }
                 }
-            })
+            }
         }
     }
 
@@ -65,17 +73,16 @@ class TaskEditActivity : AppCompatActivity() {
         val task = Task(id, binding.etTitle.text.toString(), binding.etDescription.text.toString())
         when (item.itemId) {
             R.id.action_done -> {
-                taskViewModel.saveTask(task, object : RepositoryListener {
-                    override fun response(response: Resource<Unit>) {
-                        if (response.status == ResourceStatus.SUCCESS) {
-                            finish()
-                        } else {
-                            AlertDialog.Builder(this@TaskEditActivity).setMessage(response.message)
-                                .show()
-                        }
+                lifecycleScope.launch {
+                    val response = taskViewModel.saveTask(task)
+                    if (response is Result.Success) {
+                        finish()
+                    } else if (response is Result.Error) {
+                        AlertDialog.Builder(this@TaskEditActivity)
+                            .setMessage(response.throwable.message)
+                            .show()
                     }
-
-                })
+                }
                 return true
             }
             R.id.action_delete -> {
@@ -83,17 +90,15 @@ class TaskEditActivity : AppCompatActivity() {
                     .setPositiveButton(
                         R.string.delete
                     ) { _, _ ->
-                        taskViewModel.deleteTask(task, object : RepositoryListener {
-                            override fun response(response: Resource<Unit>) {
-                                if (response.status == ResourceStatus.SUCCESS) {
-                                    finish()
-                                } else {
-                                    AlertDialog.Builder(this@TaskEditActivity)
-                                        .setMessage(response.message).show()
-                                }
+                        lifecycleScope.launch {
+                            val response = taskViewModel.deleteTask(task)
+                            if (response is Result.Success) {
+                                finish()
+                            } else if (response is Result.Error) {
+                                AlertDialog.Builder(this@TaskEditActivity)
+                                    .setMessage(response.throwable.message).show()
                             }
-
-                        })
+                        }
                     }.setNegativeButton(R.string.cancel) { _, _ -> }
                     .show()
                 return true

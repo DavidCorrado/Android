@@ -2,13 +2,16 @@ package com.corradodev.mvvm.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.corradodev.mvvm.data.Resource
-import com.corradodev.mvvm.data.task.Task
+import com.corradodev.mvvm.data.Result
 import com.corradodev.mvvm.databinding.ActivityTaskListBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TaskListActivity : AppCompatActivity() {
@@ -20,17 +23,19 @@ class TaskListActivity : AppCompatActivity() {
         tasksViewModel = ViewModelProvider(this).get(TasksViewModel::class.java)
         binding = ActivityTaskListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this)
-
-        tasksViewModel.getTasks().observe(this, Observer<Resource<List<Task>>> {
-            it?.data?.let {
-                binding.recyclerView.adapter = TaskAdapter(it) {
-                    startActivity(TaskEditActivity.newInstance(this, it))
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                tasksViewModel.uiState.collect { result ->
+                    if (result is Result.Success) {
+                        binding.recyclerView.adapter = TaskAdapter(result.data) {
+                            startActivity(TaskEditActivity.newInstance(this@TaskListActivity, it))
+                        }
+                    }
                 }
             }
-        })
+        }
 
         binding.fabAdd.setOnClickListener {
             startActivity(TaskEditActivity.newInstance(this, null))

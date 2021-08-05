@@ -1,8 +1,6 @@
 package com.corradodev.mvvm.di
 
-import com.corradodev.mvvm.data.api.APIResponseAdapter
 import com.corradodev.mvvm.data.api.APIService
-import com.corradodev.mvvm.data.api.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +26,6 @@ object NetworkModule {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://davidcorrado-todo.herokuapp.com/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(APIResponseAdapter.APIResponseAdapterFactory())
-            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .client(httpClient.build())
             .build()
         return retrofit.create(APIService::class.java)

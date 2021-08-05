@@ -27,6 +27,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        //Needed by Store
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        )
     }
     buildFeatures {
         viewBinding = true
@@ -39,7 +44,10 @@ dependencies {
     implementation(libs.androidx.constraint)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.lifecycle.runtime)
+
+    implementation(libs.kotlinx.coroutines)
+
     implementation(libs.material)
 
     implementation(libs.androidx.room.core)
@@ -50,6 +58,8 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
     implementation(libs.retrofit.logging)
+
+    implementation(libs.store)
 
     implementation(libs.hilt.core)
     kapt(libs.hilt.kapt)

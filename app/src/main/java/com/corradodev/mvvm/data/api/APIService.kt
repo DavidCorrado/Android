@@ -1,24 +1,21 @@
 package com.corradodev.mvvm.data.api
 
-import androidx.lifecycle.LiveData
 import com.corradodev.mvvm.data.task.Task
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.http.*
 
 interface APIService {
     @GET("tasks/{id}")
-    fun findTask(@Path("id") id: Long): LiveData<APIResponse<Task>>
+    suspend fun findTask(@Path("id") id: Long): Task
 
     @GET("tasks")
-    fun findTasks(): LiveData<APIResponse<List<Task>>>
+    suspend fun findTasks(): List<Task>
 
     @POST("tasks")
-    fun saveTask(@Body task: Task): MyCall<Task>
+    suspend fun saveTask(@Body task: Task): Task
 
     @DELETE("tasks/{id}")
-    fun deleteTask(@Path("id") id: Long): MyCall<ResponseBody>
+    suspend fun deleteTask(@Path("id") id: Long)
 
     @DELETE("tasks")
-    fun deleteTasks(): MyCall<ResponseBody>
+    suspend fun deleteTasks()
 }

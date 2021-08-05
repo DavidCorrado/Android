@@ -1,92 +1,70 @@
 package com.corradodev.mvvm.data.task
 
-import androidx.lifecycle.LiveData
-import com.corradodev.mvvm.data.*
-import com.corradodev.mvvm.data.api.APIResponse
-import com.corradodev.mvvm.data.api.APIResponseAdapter
+import com.corradodev.mvvm.data.Repository
+import com.corradodev.mvvm.data.Result
 import com.corradodev.mvvm.data.api.APIService
-import com.corradodev.mvvm.data.api.MyCall
-import okhttp3.ResponseBody
-import retrofit2.Call
+import com.corradodev.mvvm.data.db.AppDatabase
+import com.corradodev.mvvm.extension.toResult
+import com.corradodev.mvvm.util.ResultUtil.getResult
+import com.dropbox.android.external.store4.Fetcher
+import com.dropbox.android.external.store4.SourceOfTruth
+import com.dropbox.android.external.store4.StoreBuilder
+import com.dropbox.android.external.store4.StoreRequest
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TaskRepository @Inject constructor(private val taskDAO: TaskDAO, private val apiService: APIService, private val appExecutors: AppExecutors) : Repository<Task> {
+class TaskRepository @Inject constructor(
+    private val db: AppDatabase,
+    private val apiService: APIService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : Repository<Task> {
+    private val storeList = StoreBuilder
+        .from(
+            fetcher = Fetcher.of { apiService.findTasks() },
+            sourceOfTruth = SourceOfTruth.of(
+                reader = { db.taskDAO().findAll() },
+                writer = { _: Any, input: List<Task> -> db.taskDAO().saveAll(input) },
+            )
+        ).build()
 
-    override fun find(id: Long): LiveData<Resource<Task>> {
-        return object : FetchResource<Task>(appExecutors) {
-            override fun databaseSave(item: Task) {
-                taskDAO.save(item)
-            }
+    private val storeItem = StoreBuilder
+        .from(
+            fetcher = Fetcher.of { key: Long -> apiService.findTask(key) },
+            sourceOfTruth = SourceOfTruth.of(
+                reader = db.taskDAO()::find,
+                writer = { _: Any, input: Task -> db.taskDAO().save(input) }
+            )
+        ).build()
 
-            override fun shouldFetch(data: Task?): Boolean {
-                return true
-            }
-
-            override fun databaseLoad(): LiveData<Task> {
-                return taskDAO.find(id)
-            }
-
-            override fun networkCall(): LiveData<APIResponse<Task>> {
-                return apiService.findTask(id)
-            }
-        }.start()
+    override fun find(id: Long): Flow<Result<Task>> {
+        return storeItem.stream(StoreRequest.cached(id, true)).toResult()
     }
 
-    override fun findAll(): LiveData<Resource<List<Task>>> {
-        return object : FetchResource<List<Task>>(appExecutors) {
-            override fun databaseSave(item: List<Task>) {
-                taskDAO.saveAll(item)
-            }
-
-            override fun shouldFetch(data: List<Task>?): Boolean {
-                return true
-            }
-
-            override fun databaseLoad(): LiveData<List<Task>> {
-                return taskDAO.findAll()
-            }
-
-            override fun networkCall(): LiveData<APIResponse<List<Task>>> {
-                return apiService.findTasks()
-            }
-        }.start()
+    override fun findAll(): Flow<Result<List<Task>>> {
+        return storeList.stream(StoreRequest.cached("", true)).toResult()
     }
 
-    override fun save(data: Task, repositoryListener: RepositoryListener) {
-        object : UpdateResource<Task>(appExecutors, repositoryListener) {
-            override fun databaseUpdate(item: Task) {
-                taskDAO.save(item)
-            }
-
-            override fun networkUpdate(): MyCall<Task> {
-                return apiService.saveTask(data)
-            }
-        }.start()
+    override suspend fun save(data: Task) = withContext(ioDispatcher) {
+        getResult(
+            { (apiService::saveTask)(data) },
+            { (db.taskDAO()::save)(data) }
+        )
     }
 
-    override fun delete(data: Task, repositoryListener: RepositoryListener) {
-        object : UpdateResource<ResponseBody>(appExecutors, repositoryListener) {
-            override fun databaseUpdate(item: ResponseBody) {
-                taskDAO.delete(data)
-            }
-
-            override fun networkUpdate(): MyCall<ResponseBody> {
-                return apiService.deleteTask(data.id)
-            }
-        }.start()
+    override suspend fun delete(data: Task) = withContext(ioDispatcher) {
+        getResult(
+            { (apiService::deleteTask)(data.id) },
+            { (db.taskDAO()::delete)(data) }
+        )
     }
 
-    override fun deleteAll(repositoryListener: RepositoryListener) {
-        object : UpdateResource<ResponseBody>(appExecutors, repositoryListener) {
-            override fun databaseUpdate(item: ResponseBody) {
-                taskDAO.deleteAll()
-            }
-
-            override fun networkUpdate(): MyCall<ResponseBody> {
-                return apiService.deleteTasks()
-            }
-        }.start()
+    override suspend fun deleteAll() = withContext(ioDispatcher) {
+        getResult(
+            apiService::deleteTasks,
+            db.taskDAO()::deleteAll
+        )
     }
 }
