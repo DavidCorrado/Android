@@ -5,7 +5,6 @@ import com.corradodev.mvvm.data.Result
 import com.corradodev.mvvm.data.api.APIService
 import com.corradodev.mvvm.data.db.AppDatabase
 import com.corradodev.mvvm.extension.toResult
-import com.corradodev.mvvm.util.ResultUtil.getResult
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.StoreBuilder
@@ -48,23 +47,32 @@ class TaskRepository @Inject constructor(
     }
 
     override suspend fun save(data: Task) = withContext(ioDispatcher) {
-        getResult(
-            { (apiService::saveTask)(data) },
-            { (db.taskDAO()::save)(data) }
-        )
+        try {
+            val task = apiService.saveTask(data)
+            db.taskDAO().save(task)
+            Result.Success(Unit)
+        } catch (throwable: Throwable) {
+            Result.Error(throwable)
+        }
     }
 
     override suspend fun delete(data: Task) = withContext(ioDispatcher) {
-        getResult(
-            { (apiService::deleteTask)(data.id) },
-            { (db.taskDAO()::delete)(data) }
-        )
+        try {
+            apiService.deleteTask(data.id)
+            db.taskDAO().delete(data)
+            Result.Success(Unit)
+        } catch (throwable: Throwable) {
+            Result.Error(throwable)
+        }
     }
 
     override suspend fun deleteAll() = withContext(ioDispatcher) {
-        getResult(
-            apiService::deleteTasks,
+        try {
+            apiService::deleteTasks
             db.taskDAO()::deleteAll
-        )
+            Result.Success(Unit)
+        } catch (throwable: Throwable) {
+            Result.Error(throwable)
+        }
     }
 }
