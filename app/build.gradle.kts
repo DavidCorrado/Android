@@ -33,18 +33,25 @@ android {
             "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
         )
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.0.1"
+    }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 }
 
 dependencies {
     implementation(libs.androidx.core)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraint)
-    implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.compose.activity)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.tooling)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material.core)
+    implementation(libs.androidx.compose.material.icons)
+    implementation(libs.androidx.compose.lifecycle.viewmodel)
+    implementation(libs.androidx.compose.hilt)
 
     implementation(libs.kotlinx.coroutines)
 

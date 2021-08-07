@@ -3,11 +3,12 @@ kotlin = "1.5.21"
 androidBuildTools = "7.0.0"
 
 androidx-core = "1.6.0"
-androidx-appcompat = "1.3.1"
-androidx-constraint = "2.0.4"
-androidx-recyclerview = "1.2.1"
-androidx-lifecycle = "2.4.0-alpha03" #Alpha to allow for repeatOnLifecycle
 androidx-room = "2.3.0"
+
+compose-activity = "1.3.1"
+compose-core = "1.0.1"
+compose-lifecycle = "1.0.0-alpha07"
+compose-hilt = "1.0.0-alpha03"
 
 kotlinx-coroutines = "1.3.9"
 
@@ -31,11 +32,16 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "androidBuildTools" }
 
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
-androidx-constraint = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraint" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
-androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+
+androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose-activity" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-core" }
+androidx-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-core" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-core" }
+androidx-compose-material-core = { module = "androidx.compose.material:material", version.ref = "compose-core" }
+androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-core" }
+androidx-compose-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-lifecycle" }
+androidx-compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-hilt" }
+
 androidx-room-core = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
 androidx-room-kapt = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 

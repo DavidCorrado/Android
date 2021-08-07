@@ -1,4 +1,4 @@
-package com.corradodev.mvvm.ui
+package com.corradodev.mvvm.ui.tasks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,13 +14,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TasksViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
-    private val _uiState = MutableStateFlow<Result<List<Task>>>(Result.Loading)
-    val uiState = _uiState.asStateFlow()
+    private val _state = MutableStateFlow<Result<List<Task>>>(Result.Loading)
+    val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
             taskRepository.findAll().collect { result ->
-                _uiState.value = result
+                _state.value = result
             }
         }
     }

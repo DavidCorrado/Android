@@ -1,4 +1,4 @@
-package com.corradodev.mvvm.ui
+package com.corradodev.mvvm.ui.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,15 +14,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
-    private val _uiState = MutableStateFlow<Result<Task>>(Result.Loading)
-    val uiState = _uiState.asStateFlow()
+    private val _state = MutableStateFlow<Result<Task>>(Result.Loading)
+    val state = _state.asStateFlow()
 
     fun loadTask(id: Long) {
         viewModelScope.launch {
-            taskRepository.find(id).collect { result ->
-                _uiState.value = result
+            if (id == 0L) {
+                _state.value = Result.Success(Task(0, "", ""))
+            } else {
+                taskRepository.find(id).collect { result ->
+                    _state.value = result
+                }
             }
         }
+    }
+
+    fun taskModelUpdate(task: Task) {
+        _state.value = Result.Success(task)
     }
 
     suspend fun saveTask(task: Task): Result<Unit> {
