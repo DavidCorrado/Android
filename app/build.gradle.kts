@@ -8,7 +8,7 @@ plugins {
 android {
     compileSdk = 30
     defaultConfig {
-        applicationId = "com.corradodev.mvvm"
+        applicationId = "com.corradodev.todo"
         minSdk = 23
         targetSdk = 30
         versionCode = 1
