@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">To Do</string>
+
+    <string name="to_do_details">To Do Details</string>
+    <string name="detail">Detail</string>
+    <string name="name">Name</string>
+
+    <string name="content_desc_back">Back</string>
+    <string name="content_desc_done">Done</string>
+    <string name="content_desc_delete">Delete</string>
+    <string name="content_desc_add">Add</string>
+
 </resources>

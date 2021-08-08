@@ -18,10 +18,7 @@ fun MainApp() {
     AppTheme {
         NavHost(navController = navController, startDestination = "tasks") {
             composable("tasks") {
-                TasksScreen(hiltViewModel(), showTaskScreen = { taskId ->
-                    navController.navigate("task/$taskId")
-                }
-                )
+                TasksScreen(hiltViewModel(), navController)
             }
             composable(
                 "task/{taskId}",
@@ -32,12 +29,7 @@ fun MainApp() {
                 val viewModel = hiltViewModel<TaskViewModel>()
                 val taskId = backStackEntry.arguments?.getLong("taskId") ?: 0
                 viewModel.loadTask(taskId)
-                TaskScreen(viewModel, taskId, deleteTask = {
-                    navController.popBackStack()
-                },
-                    doneTask = {
-                        navController.popBackStack()
-                    })
+                TaskScreen(viewModel, taskId, navController = navController)
             }
         }
     }
