@@ -32,10 +32,10 @@ fun MainApp() {
                 val viewModel = hiltViewModel<TaskViewModel>()
                 val taskId = backStackEntry.arguments?.getLong("taskId") ?: 0
                 viewModel.loadTask(taskId)
-                TaskScreen(viewModel, taskId, deleteTask = { task ->
+                TaskScreen(viewModel, taskId, deleteTask = {
                     navController.popBackStack()
                 },
-                    doneTask = { task ->
+                    doneTask = {
                         navController.popBackStack()
                     })
             }

@@ -1,9 +1,3 @@
 <resources>
     <string name="app_name">MVVM</string>
-    <string name="done">Done</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
-    <string name="delete">Delete</string>
-    <string name="delete_task_question">Delete Task?</string>
-    <string name="cancel">Cancel</string>
 </resources>

@@ -32,56 +32,64 @@ fun TaskScreen(
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("TopAppBar2") }, actions = {
-                val viewState = viewState
-                if (viewState is Result.Success) {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            val result = viewModel.saveTask(viewState.data)
-                            if (result is Result.Success) {
-                                doneTask(viewState.data)
-                            }
-                        }
-                    }) {
-                        Icon(Icons.Filled.Done, contentDescription = "Done")
-                    }
-                    if (taskId != 0L) {
+                viewState.let { viewState ->
+                    if (viewState is Result.Success) {
                         IconButton(onClick = {
                             coroutineScope.launch {
-                                val result = viewModel.deleteTask(viewState.data)
+                                val result = viewModel.saveTask(viewState.data)
                                 if (result is Result.Success) {
-                                    deleteTask(viewState.data)
+                                    doneTask(viewState.data)
                                 }
                             }
                         }) {
-                            Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                            Icon(Icons.Filled.Done, contentDescription = "Done")
+                        }
+                        if (taskId != 0L) {
+                            IconButton(onClick = {
+                                coroutineScope.launch {
+                                    val result = viewModel.deleteTask(viewState.data)
+                                    if (result is Result.Success) {
+                                        deleteTask(viewState.data)
+                                    }
+                                }
+                            }) {
+                                Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                            }
                         }
                     }
                 }
             })
         },
         content = {
-            val viewState = viewState
-            when (viewState) {
-                is Result.Success -> {
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        TextField(
-                            value = viewState.data.name,
-                            onValueChange = { viewModel.taskModelUpdate(viewState.data.copy(name = it)) },
-                            label = { Text("Name") }
-                        )
-                        TextField(
-                            value = viewState.data.detail,
-                            onValueChange = { viewModel.taskModelUpdate(viewState.data.copy(detail = it)) },
-                            label = { Text("Detail") }
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
+            viewState.let { viewState ->
+                when (viewState) {
+                    is Result.Success -> {
+                        Column(modifier = Modifier.padding(8.dp)) {
+                            TextField(
+                                value = viewState.data.name,
+                                onValueChange = { viewModel.taskModelUpdate(viewState.data.copy(name = it)) },
+                                label = { Text("Name") }
+                            )
+                            TextField(
+                                value = viewState.data.detail,
+                                onValueChange = {
+                                    viewModel.taskModelUpdate(
+                                        viewState.data.copy(
+                                            detail = it
+                                        )
+                                    )
+                                },
+                                label = { Text("Detail") }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                     }
-                }
-                is Result.Error -> {
-                    Text("Error")
-                }
-                is Result.Loading -> {
-                    Text("Loading")
+                    is Result.Error -> {
+                        Text("Error")
+                    }
+                    is Result.Loading -> {
+                        Text("Loading")
+                    }
                 }
             }
         },

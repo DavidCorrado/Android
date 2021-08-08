@@ -32,6 +32,10 @@ android {
             "-Xopt-in=kotlinx.coroutines.FlowPreview",
             "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
         )
+        allWarningsAsErrors = true
+    }
+    lint {
+        isWarningsAsErrors = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.0.1"

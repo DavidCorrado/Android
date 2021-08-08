@@ -31,35 +31,36 @@ fun TasksScreen(viewModel: TasksViewModel, showTaskScreen: (taskId: Long) -> Uni
             }
         },
         content = {
-            val viewState = viewState
-            when (viewState) {
-                is Result.Success -> {
-                    LazyColumn {
-                        items(viewState.data) { task ->
-                            Column(
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .clickable { showTaskScreen(task.id) }) {
-                                Text(
-                                    text = task.name,
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                                Text(
-                                    text = task.detail,
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
+            viewState.let { viewState ->
+                when (viewState) {
+                    is Result.Success -> {
+                        LazyColumn {
+                            items(viewState.data) { task ->
+                                Column(
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .clickable { showTaskScreen(task.id) }) {
+                                    Text(
+                                        text = task.name,
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                    Text(
+                                        text = task.detail,
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                }
                             }
                         }
                     }
-                }
-                is Result.Error -> {
-                    Text("Error")
-                }
-                is Result.Loading -> {
-                    Text("Loading")
+                    is Result.Error -> {
+                        Text("Error")
+                    }
+                    is Result.Loading -> {
+                        Text("Loading")
+                    }
                 }
             }
         },
