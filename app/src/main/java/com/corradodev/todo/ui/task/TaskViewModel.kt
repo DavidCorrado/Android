@@ -2,7 +2,7 @@ package com.corradodev.todo.ui.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.corradodev.todo.data.Result
+import com.corradodev.todo.data.ViewState
 import com.corradodev.todo.data.task.Task
 import com.corradodev.todo.data.task.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,13 +14,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
-    private val _state = MutableStateFlow<Result<Task>>(Result.Loading)
+    private val _state = MutableStateFlow<ViewState<Task>>(ViewState.Loading)
     val state = _state.asStateFlow()
 
     fun loadTask(id: Long) {
         viewModelScope.launch {
             if (id == 0L) {
-                _state.value = Result.Success(Task(0, "", ""))
+                _state.value = ViewState.Success(Task(0, "", ""))
             } else {
                 taskRepository.find(id).collect { result ->
                     _state.value = result
@@ -30,14 +30,14 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
     }
 
     fun taskModelUpdate(task: Task) {
-        _state.value = Result.Success(task)
+        _state.value = ViewState.Success(task)
     }
 
-    suspend fun saveTask(task: Task): Result<Unit> {
+    suspend fun saveTask(task: Task): ViewState<Unit> {
         return taskRepository.save(task)
     }
 
-    suspend fun deleteTask(task: Task): Result<Unit> {
+    suspend fun deleteTask(task: Task): ViewState<Unit> {
         return taskRepository.delete(task)
     }
 }

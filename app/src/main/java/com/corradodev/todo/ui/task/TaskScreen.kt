@@ -16,7 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.corradodev.todo.R
-import com.corradodev.todo.data.Result
+import com.corradodev.todo.data.ViewState
+import com.corradodev.todo.data.successData
+import com.corradodev.todo.view.ViewStateView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -33,37 +35,35 @@ fun TaskScreen(
             TopAppBar(
                 title = { Text(stringResource(id = R.string.to_do_details)) },
                 actions = {
-                    viewState.let { viewState ->
-                        if (viewState is Result.Success) {
+                    viewState.successData?.let { task ->
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                val result = viewModel.saveTask(task)
+                                if (result is ViewState.Success) {
+                                    navController.popBackStack()
+                                }
+                            }
+                        }) {
+                            Icon(
+                                Icons.Filled.Done,
+                                contentDescription = stringResource(id = R.string.content_desc_done),
+                                tint = MaterialTheme.colors.onPrimary
+                            )
+                        }
+                        if (taskId != 0L) {
                             IconButton(onClick = {
                                 coroutineScope.launch {
-                                    val result = viewModel.saveTask(viewState.data)
-                                    if (result is Result.Success) {
+                                    val result = viewModel.deleteTask(task)
+                                    if (result is ViewState.Success) {
                                         navController.popBackStack()
                                     }
                                 }
                             }) {
                                 Icon(
-                                    Icons.Filled.Done,
-                                    contentDescription = stringResource(id = R.string.content_desc_done),
+                                    Icons.Filled.Delete,
+                                    contentDescription = stringResource(id = R.string.content_desc_delete),
                                     tint = MaterialTheme.colors.onPrimary
                                 )
-                            }
-                            if (taskId != 0L) {
-                                IconButton(onClick = {
-                                    coroutineScope.launch {
-                                        val result = viewModel.deleteTask(viewState.data)
-                                        if (result is Result.Success) {
-                                            navController.popBackStack()
-                                        }
-                                    }
-                                }) {
-                                    Icon(
-                                        Icons.Filled.Delete,
-                                        contentDescription = stringResource(id = R.string.content_desc_delete),
-                                        tint = MaterialTheme.colors.onPrimary
-                                    )
-                                }
                             }
                         }
                     }
@@ -79,40 +79,32 @@ fun TaskScreen(
             )
         },
         content = {
-            viewState.let { viewState ->
-                when (viewState) {
-                    is Result.Success -> {
-                        Column(modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth()) {
-                            TextField(
-                                value = viewState.data.name,
-                                onValueChange = { viewModel.taskModelUpdate(viewState.data.copy(name = it)) },
-                                label = { Text(stringResource(id = R.string.name)) },
-                                modifier = Modifier.fillMaxWidth()
+            ViewStateView(viewState) { task ->
+                Column(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                ) {
+                    TextField(
+                        value = task.name,
+                        onValueChange = { viewModel.taskModelUpdate(task.copy(name = it)) },
+                        label = { Text(stringResource(id = R.string.name)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        value = task.detail,
+                        onValueChange = {
+                            viewModel.taskModelUpdate(
+                                task.copy(
+                                    detail = it
+                                )
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            TextField(
-                                value = viewState.data.detail,
-                                onValueChange = {
-                                    viewModel.taskModelUpdate(
-                                        viewState.data.copy(
-                                            detail = it
-                                        )
-                                    )
-                                },
-                                label = { Text(stringResource(id = R.string.detail)) },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-                    }
-                    is Result.Error -> {
-                        Text("Error")
-                    }
-                    is Result.Loading -> {
-                        Text("Loading")
-                    }
+                        },
+                        label = { Text(stringResource(id = R.string.detail)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         },

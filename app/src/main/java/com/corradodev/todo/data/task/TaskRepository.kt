@@ -1,7 +1,7 @@
 package com.corradodev.todo.data.task
 
 import com.corradodev.todo.data.Repository
-import com.corradodev.todo.data.Result
+import com.corradodev.todo.data.ViewState
 import com.corradodev.todo.data.api.APIService
 import com.corradodev.todo.data.db.AppDatabase
 import com.corradodev.todo.extension.toResult
@@ -38,11 +38,11 @@ class TaskRepository @Inject constructor(
             )
         ).build()
 
-    override fun find(id: Long): Flow<Result<Task>> {
+    override fun find(id: Long): Flow<ViewState<Task>> {
         return storeItem.stream(StoreRequest.cached(id, true)).toResult()
     }
 
-    override fun findAll(): Flow<Result<List<Task>>> {
+    override fun findAll(): Flow<ViewState<List<Task>>> {
         return storeList.stream(StoreRequest.cached("", true)).toResult()
     }
 
@@ -50,9 +50,9 @@ class TaskRepository @Inject constructor(
         try {
             val task = apiService.saveTask(data)
             db.taskDAO().save(task)
-            Result.Success(Unit)
+            ViewState.Success(Unit)
         } catch (throwable: Throwable) {
-            Result.Error(throwable)
+            ViewState.Error(throwable)
         }
     }
 
@@ -60,9 +60,9 @@ class TaskRepository @Inject constructor(
         try {
             apiService.deleteTask(data.id)
             db.taskDAO().delete(data)
-            Result.Success(Unit)
+            ViewState.Success(Unit)
         } catch (throwable: Throwable) {
-            Result.Error(throwable)
+            ViewState.Error(throwable)
         }
     }
 
@@ -70,9 +70,9 @@ class TaskRepository @Inject constructor(
         try {
             apiService::deleteTasks
             db.taskDAO()::deleteAll
-            Result.Success(Unit)
+            ViewState.Success(Unit)
         } catch (throwable: Throwable) {
-            Result.Error(throwable)
+            ViewState.Error(throwable)
         }
     }
 }
