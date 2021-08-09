@@ -64,10 +64,11 @@ dependencies {
     implementation(libs.androidx.room.core)
     kapt(libs.androidx.room.kapt)
 
-    implementation(libs.gson)
+    implementation(libs.moshi.core)
+    kapt(libs.moshi.kapt)
 
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.moshi)
     implementation(libs.retrofit.logging)
 
     implementation(libs.store)
