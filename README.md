@@ -2,7 +2,7 @@
 
 Android example using best practices
 
-![Actions Status](https://github.com/DavidCorrado/Android/actions/workflows/Android/badge.svg)
+![Actions Status](https://github.com/DavidCorrado/Android/workflows/Android/badge.svg)
 
 - Arch - MVVM with Repository pattern
 - DI - Hilt/Dagger
