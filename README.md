@@ -2,6 +2,8 @@
 
 Android example using best practices
 
+![Actions Status](https://github.com/DavidCorrado/Android/workflows/Android/badge.svg)
+
 - Arch - MVVM with Repository pattern
 - DI - Hilt/Dagger
 - StateManagement - StateFlow - Over LiveData
