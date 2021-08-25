@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.compose.lifecycle.viewmodel)
     implementation(libs.androidx.compose.hilt)
 
+    coreLibraryDesugaring(libs.android.desugaring)
+
     implementation(libs.kotlinx.coroutines)
 
     implementation(libs.material)

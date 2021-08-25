@@ -5,6 +5,8 @@ androidBuildTools = "7.0.0"
 androidx-core = "1.6.0"
 androidx-room = "2.3.0"
 
+android-desugaring = "1.1.5"
+
 compose-activity = "1.3.1"
 compose-core = "1.0.1"
 compose-lifecycle = "1.0.0-alpha07"
@@ -44,6 +46,8 @@ androidx-compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", vers
 
 androidx-room-core = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
 androidx-room-kapt = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+
+android-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugaring" }
 
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 
