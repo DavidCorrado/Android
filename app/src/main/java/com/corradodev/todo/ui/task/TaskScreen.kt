@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,14 +35,16 @@ fun TaskScreen(
                 title = { Text(stringResource(id = R.string.to_do_details)) },
                 actions = {
                     viewState.successData?.let { task ->
-                        IconButton(onClick = {
-                            coroutineScope.launch {
-                                val result = viewModel.saveTask(task)
-                                if (result is ViewState.Success) {
-                                    navController.popBackStack()
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    val result = viewModel.saveTask(task)
+                                    if (result is ViewState.Success) {
+                                        navController.popBackStack()
+                                    }
                                 }
                             }
-                        }) {
+                        ) {
                             Icon(
                                 Icons.Filled.Done,
                                 contentDescription = stringResource(id = R.string.content_desc_done),
@@ -51,14 +52,16 @@ fun TaskScreen(
                             )
                         }
                         if (taskId != 0L) {
-                            IconButton(onClick = {
-                                coroutineScope.launch {
-                                    val result = viewModel.deleteTask(task)
-                                    if (result is ViewState.Success) {
-                                        navController.popBackStack()
+                            IconButton(
+                                onClick = {
+                                    coroutineScope.launch {
+                                        val result = viewModel.deleteTask(task)
+                                        if (result is ViewState.Success) {
+                                            navController.popBackStack()
+                                        }
                                     }
                                 }
-                            }) {
+                            ) {
                                 Icon(
                                     Icons.Filled.Delete,
                                     contentDescription = stringResource(id = R.string.content_desc_delete),

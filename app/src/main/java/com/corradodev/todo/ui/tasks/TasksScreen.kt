@@ -32,7 +32,8 @@ fun TasksScreen(viewModel: TasksViewModel, navController: NavController) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp)
-                                .clickable { navController.navigate("task/${task.id}") }) {
+                                .clickable { navController.navigate("task/${task.id}") }
+                        ) {
                             Text(
                                 text = task.name,
                                 fontSize = 22.sp,

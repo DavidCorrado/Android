@@ -28,7 +28,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-        //Needed by Store
+        // Needed by Store
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-Xopt-in=kotlinx.coroutines.FlowPreview",
             "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
