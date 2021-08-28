@@ -39,7 +39,7 @@ android {
         isWarningsAsErrors = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.1"
+        kotlinCompilerExtensionVersion = libs.versions.compose.core.get()
     }
     buildFeatures {
         compose = true
