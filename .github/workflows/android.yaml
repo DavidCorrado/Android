@@ -21,5 +21,9 @@ jobs:
         run: chmod +x gradlew
       - name: Unit tests
         run: ./gradlew testRelease
+      - name: KtLint
+        run: ./gradlew ktlintCheck
       - name: Lint
         run: ./gradlew lintRelease
+      - name: Build
+        run: ./gradlew buildRelease

@@ -39,7 +39,7 @@ android {
         isWarningsAsErrors = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.1"
+        kotlinCompilerExtensionVersion = libs.versions.compose.core.get()
     }
     buildFeatures {
         compose = true
@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.androidx.compose.material.icons)
     implementation(libs.androidx.compose.lifecycle.viewmodel)
     implementation(libs.androidx.compose.hilt)
+
+    coreLibraryDesugaring(libs.android.desugaring)
 
     implementation(libs.kotlinx.coroutines)
 
