@@ -1,5 +1,6 @@
 plugins {
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0" //Version hardcoded until version_catelog supports it
+    // Version hardcoded until version_catelog supports it
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
 }
 
 buildscript {
