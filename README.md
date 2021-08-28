@@ -3,6 +3,7 @@
 Android example using best practices
 
 ![Actions Status](https://github.com/DavidCorrado/Android/workflows/Android/badge.svg)
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 - Arch - MVVM with Repository pattern
 - DI - Hilt/Dagger
