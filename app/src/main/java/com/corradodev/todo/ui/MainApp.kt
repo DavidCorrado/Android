@@ -22,9 +22,11 @@ fun MainApp() {
             }
             composable(
                 "task/{taskId}",
-                arguments = listOf(navArgument("taskId") {
-                    type = NavType.LongType
-                })
+                arguments = listOf(
+                    navArgument("taskId") {
+                        type = NavType.LongType
+                    }
+                )
             ) { backStackEntry ->
                 val viewModel = hiltViewModel<TaskViewModel>()
                 val taskId = backStackEntry.arguments?.getLong("taskId") ?: 0
