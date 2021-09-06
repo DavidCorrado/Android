@@ -29,7 +29,7 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        //Have to use Java8 because of bug with using jacoco https://issuetracker.google.com/issues/178400721 https://issuetracker.google.com/issues/178172809
+        // Have to use Java8 because of bug with using jacoco https://issuetracker.google.com/issues/178400721 https://issuetracker.google.com/issues/178172809
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -107,25 +107,27 @@ tasks.register<JacocoReport>("jacocoTestReport") {
     }
 
     val fileFilter = listOf(
-        "**/di/**",//
-        "**/*JsonAdapter.*",// Moshi generated
+        "**/di/**", //
+        "**/*JsonAdapter.*", // Moshi generated
         "**/*\$\$*",
     )
 
     val debugTree =
-        fileTree("${buildDir}/tmp/kotlin-classes/debug") { exclude(fileFilter) }
+        fileTree("$buildDir/tmp/kotlin-classes/debug") { exclude(fileFilter) }
     val mainSrc = "${project.projectDir}/src/main/java"
 
     sourceDirectories.setFrom(files(listOf(mainSrc)))
     classDirectories.setFrom(files(listOf(debugTree)))
-    executionData.setFrom(fileTree("$buildDir") {
-        include(
-            listOf(
-                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-                "outputs/code_coverage/debugAndroidTest/connected/**/*.ec"
+    executionData.setFrom(
+        fileTree("$buildDir") {
+            include(
+                listOf(
+                    "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                    "outputs/code_coverage/debugAndroidTest/connected/**/*.ec"
+                )
             )
-        )
-    })
+        }
+    )
 }
 
 tasks.withType<Test> {
