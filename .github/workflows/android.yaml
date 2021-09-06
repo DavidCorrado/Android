@@ -7,9 +7,9 @@ jobs:
   tests:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: KtLint
+      - name: DC
         run: ls
+      - uses: actions/checkout@v2
       - uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true
