@@ -3,9 +3,12 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("jacoco")
 }
-
 android {
+    testCoverage {
+        jacocoVersion = libs.versions.jacoco.get()
+    }
     compileSdk = 30
     defaultConfig {
         applicationId = "com.corradodev.todo"
@@ -16,6 +19,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        getByName("debug") {
+            isTestCoverageEnabled = true
+        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
@@ -23,11 +29,12 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        //Have to use Java8 because of bug with using jacoco https://issuetracker.google.com/issues/178400721 https://issuetracker.google.com/issues/178172809
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
         // Needed by Store
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-Xopt-in=kotlinx.coroutines.FlowPreview",
@@ -43,6 +50,14 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        animationsDisabled = true
+
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -82,4 +97,40 @@ dependencies {
 
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn(listOf("testDebugUnitTest", "createDebugCoverageReport"))
+    reports {
+        xml.isEnabled = true
+        html.isEnabled = true
+    }
+
+    val fileFilter = listOf(
+        "**/di/**",//
+        "**/*JsonAdapter.*",// Moshi generated
+        "**/*\$\$*",
+    )
+
+    val debugTree =
+        fileTree("${buildDir}/tmp/kotlin-classes/debug") { exclude(fileFilter) }
+    val mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files(listOf(mainSrc)))
+    classDirectories.setFrom(files(listOf(debugTree)))
+    executionData.setFrom(fileTree("$buildDir") {
+        include(
+            listOf(
+                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                "outputs/code_coverage/debugAndroidTest/connected/**/*.ec"
+            )
+        )
+    })
+}
+
+tasks.withType<Test> {
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
+        excludes = listOf("jdk.internal.*")
+    }
 }

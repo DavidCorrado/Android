@@ -22,3 +22,5 @@ Android example using best practices
 - DateTime - Java 8 desugaring
 - Lint - Warnings as errors
 - Accessibilty - Kept in mind
+- KTlint - Required to pass
+- Jacoco - Code Coverage report
