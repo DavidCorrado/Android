@@ -62,6 +62,8 @@ android {
 }
 
 dependencies {
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestUtil("androidx.test:orchestrator:1.4.0")
     implementation(libs.androidx.core)
     implementation(libs.androidx.compose.activity)
     implementation(libs.androidx.compose.ui)
