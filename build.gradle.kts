@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-//https://issuetracker.google.com/issues/195035558
+// https://issuetracker.google.com/issues/195035558
 subprojects {
     configurations.all {
         resolutionStrategy {
