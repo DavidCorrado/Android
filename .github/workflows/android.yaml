@@ -28,4 +28,4 @@ jobs:
       - uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true
-          files: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          files: app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
