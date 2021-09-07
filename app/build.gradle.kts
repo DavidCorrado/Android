@@ -95,6 +95,8 @@ dependencies {
 
     testImplementation(libs.testing.junit)
 
+    androidTestImplementation(libs.testing.runner)
+    androidTestUtil(libs.testing.orchestrator)
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
 }
