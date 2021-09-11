@@ -59,6 +59,9 @@ android {
             isIncludeAndroidResources = true
         }
     }
+    packagingOptions.resources {
+        excludes += "META-INF/**"
+    }
 }
 
 dependencies {
@@ -101,6 +104,8 @@ dependencies {
     androidTestUtil(libs.testing.orchestrator)
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
+    androidTestImplementation(libs.testing.compose.junit)
+    debugImplementation(libs.testing.compose.manifest)
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {

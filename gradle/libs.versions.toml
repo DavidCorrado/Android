@@ -79,3 +79,5 @@ testing-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "te
 testing-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "testing-espresso-core" }
 testing-runner = { module = "androidx.test:runner", version.ref = "testing-orchestrator" }
 testing-orchestrator = { module = "androidx.test:orchestrator", version.ref = "testing-orchestrator" }
+testing-compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-core" }
+testing-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-core" }
