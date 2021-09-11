@@ -94,6 +94,8 @@ dependencies {
     kapt(libs.hilt.kapt)
 
     testImplementation(libs.testing.junit)
+    testImplementation(libs.testing.truth)
+    testImplementation(libs.testing.coroutines)
 
     androidTestImplementation(libs.testing.runner)
     androidTestUtil(libs.testing.orchestrator)
