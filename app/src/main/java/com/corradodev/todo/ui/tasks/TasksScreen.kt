@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.corradodev.todo.R
-import com.corradodev.todo.view.ViewStateView
+import com.corradodev.todo.view.DataStateView
 
 @Composable
 fun TasksScreen(viewModel: TasksViewModel, navController: NavController) {
@@ -25,7 +25,7 @@ fun TasksScreen(viewModel: TasksViewModel, navController: NavController) {
         topBar = { TopAppBar(title = { Text(stringResource(id = R.string.app_name)) }) },
         content = {
             val viewState by viewModel.state.collectAsState()
-            ViewStateView(viewState) { tasks ->
+            DataStateView(viewState) { tasks ->
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     items(tasks) { task ->
                         Column(

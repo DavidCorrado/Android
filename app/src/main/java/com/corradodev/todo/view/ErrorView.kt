@@ -7,14 +7,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.corradodev.todo.data.DataError
 
 @Composable
-fun ErrorView(throwable: Throwable) {
+fun ErrorView(dataError: DataError) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(throwable.message ?: "Unknown")
+        Text(dataError.message ?: "Unknown")
     }
 }

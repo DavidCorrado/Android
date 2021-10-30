@@ -1,7 +1,8 @@
 package com.corradodev.todo.data.task
 
+import com.corradodev.todo.data.DataError
+import com.corradodev.todo.data.DataState
 import com.corradodev.todo.data.Repository
-import com.corradodev.todo.data.ViewState
 import com.corradodev.todo.data.api.APIService
 import com.corradodev.todo.data.db.AppDatabase
 import com.corradodev.todo.extension.toResult
@@ -38,41 +39,41 @@ class TaskRepository @Inject constructor(
             )
         ).build()
 
-    override fun find(id: Long): Flow<ViewState<Task>> {
+    override fun find(id: Long): Flow<DataState<Task>> {
         return storeItem.stream(StoreRequest.cached(id, true)).toResult()
     }
 
-    override fun findAll(): Flow<ViewState<List<Task>>> {
+    override fun findAll(): Flow<DataState<List<Task>>> {
         return storeList.stream(StoreRequest.cached("", true)).toResult()
     }
 
     override suspend fun save(data: Task) = withContext(ioDispatcher) {
-        try {
+        kotlin.runCatching {
             val task = apiService.saveTask(data)
             db.taskDAO().save(task)
-            ViewState.Success(Unit)
-        } catch (throwable: Throwable) {
-            ViewState.Error(throwable)
+            DataState.Success(Unit)
+        }.getOrElse { t ->
+            DataState.Error(DataError(t.message))
         }
     }
 
     override suspend fun delete(data: Task) = withContext(ioDispatcher) {
-        try {
+        kotlin.runCatching {
             apiService.deleteTask(data.id)
             db.taskDAO().delete(data)
-            ViewState.Success(Unit)
-        } catch (throwable: Throwable) {
-            ViewState.Error(throwable)
+            DataState.Success(Unit)
+        }.getOrElse { t ->
+            DataState.Error(DataError(t.message))
         }
     }
 
     override suspend fun deleteAll() = withContext(ioDispatcher) {
-        try {
+        kotlin.runCatching {
             apiService::deleteTasks
             db.taskDAO()::deleteAll
-            ViewState.Success(Unit)
-        } catch (throwable: Throwable) {
-            ViewState.Error(throwable)
+            DataState.Success(Unit)
+        }.getOrElse { t ->
+            DataState.Error(DataError(t.message))
         }
     }
 }

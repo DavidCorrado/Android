@@ -1,6 +1,6 @@
 package com.corradodev.todo.extension
 
-import com.corradodev.todo.data.ViewState
+import com.corradodev.todo.data.DataState
 import com.corradodev.todo.data.successData
 import com.dropbox.android.external.store4.ResponseOrigin
 import com.dropbox.android.external.store4.StoreResponse
@@ -16,7 +16,7 @@ class FlowStoreResultExtensionTest {
         val loadingState =
             flow<StoreResponse<Unit>> { emit(StoreResponse.Loading(origin = ResponseOrigin.Cache)) }.toResult()
                 .first()
-        assertThat(loadingState).isEqualTo(ViewState.Loading)
+        assertThat(loadingState).isEqualTo(DataState.Loading)
     }
 
     @Test
@@ -30,7 +30,7 @@ class FlowStoreResultExtensionTest {
                 )
             )
         }.toResult().first()
-        assertThat(errorState).isEqualTo(ViewState.Error(exception))
+        assertThat(errorState).isEqualTo(DataState.Error(exception))
     }
 
     @Test
@@ -43,7 +43,7 @@ class FlowStoreResultExtensionTest {
                     origin = ResponseOrigin.Cache
                 )
             )
-        }.toResult().first() as ViewState.Error
+        }.toResult().first() as DataState.Error
         assertThat(errorState.throwable.message).isEqualTo(error)
     }
 
