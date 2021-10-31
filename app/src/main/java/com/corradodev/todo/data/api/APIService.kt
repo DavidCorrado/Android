@@ -15,7 +15,4 @@ interface APIService {
 
     @DELETE("tasks/{id}")
     suspend fun deleteTask(@Path("id") id: Long)
-
-    @DELETE("tasks")
-    suspend fun deleteTasks()
 }

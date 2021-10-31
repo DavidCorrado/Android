@@ -89,8 +89,8 @@ fun TaskScreen(
                         .fillMaxWidth()
                 ) {
                     TextField(
-                        value = task.name,
-                        onValueChange = { viewModel.taskModelUpdate(task.copy(name = it)) },
+                        value = task.title,
+                        onValueChange = { viewModel.taskModelUpdate(task.copy(title = it)) },
                         label = { Text(stringResource(id = R.string.name)) },
                         modifier = Modifier.fillMaxWidth()
                     )

@@ -8,6 +8,6 @@ import com.squareup.moshi.JsonClass
 @Entity(tableName = "tasks")
 data class Task(
     @PrimaryKey(autoGenerate = true) val id: Long,
-    val name: String,
+    val title: String,
     val detail: String
 )

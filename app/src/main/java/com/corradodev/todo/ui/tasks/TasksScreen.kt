@@ -35,7 +35,7 @@ fun TasksScreen(viewModel: TasksViewModel, navController: NavController) {
                                 .clickable { navController.navigate("task/${task.id}") }
                         ) {
                             Text(
-                                text = task.name,
+                                text = task.title,
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
                             )

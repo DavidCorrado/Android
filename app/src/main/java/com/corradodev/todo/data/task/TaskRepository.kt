@@ -66,14 +66,4 @@ class TaskRepository @Inject constructor(
             DataState.Error(DataError(t.message))
         }
     }
-
-    override suspend fun deleteAll() = withContext(ioDispatcher) {
-        kotlin.runCatching {
-            apiService::deleteTasks
-            db.taskDAO()::deleteAll
-            DataState.Success(Unit)
-        }.getOrElse { t ->
-            DataState.Error(DataError(t.message))
-        }
-    }
 }

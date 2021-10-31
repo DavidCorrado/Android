@@ -7,5 +7,4 @@ interface Repository<T> {
     fun findAll(): Flow<DataState<List<T>>>
     suspend fun save(data: T): DataState<Unit>
     suspend fun delete(data: T): DataState<Unit>
-    suspend fun deleteAll(): DataState<Unit>
 }
