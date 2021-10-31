@@ -5,12 +5,13 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import com.corradodev.todo.data.DataError
 import com.corradodev.todo.data.DataState
 import com.corradodev.todo.ui.theme.AppTheme
 import org.junit.Rule
 import org.junit.Test
 
-class ViewStateDataTest {
+class DataStateViewTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -18,7 +19,7 @@ class ViewStateDataTest {
     fun shouldShowLoadingWithLoadingState() {
         composeTestRule.setContent {
             AppTheme(darkTheme = true) {
-                ViewStateView(DataState.Loading) {}
+                DataStateView(DataState.Loading) {}
             }
         }
         composeTestRule.onNodeWithTag(TestTags.LOADING_VIEW_PROGRESS_INDICATOR).assertIsDisplayed()
@@ -29,7 +30,7 @@ class ViewStateDataTest {
         val error = "Error"
         composeTestRule.setContent {
             AppTheme(darkTheme = true) {
-                ViewStateView(DataState.Error(Exception(error))) {}
+                DataStateView(DataState.Error(DataError(error))) {}
             }
         }
         composeTestRule.onNodeWithText(error).assertIsDisplayed()
@@ -40,7 +41,7 @@ class ViewStateDataTest {
         val content = "Content"
         composeTestRule.setContent {
             AppTheme {
-                ViewStateView(DataState.Success(content)) {
+                DataStateView(DataState.Success(content)) {
                     Text(it)
                 }
             }
@@ -52,7 +53,7 @@ class ViewStateDataTest {
     fun shouldShowEmptyWithSuccessEmptyState() {
         composeTestRule.setContent {
             AppTheme {
-                ViewStateView(DataState.Success<List<Unit>>(listOf())) {}
+                DataStateView(DataState.Success<List<Unit>>(listOf())) {}
             }
         }
         composeTestRule.onNodeWithText("No Data").assertIsDisplayed()

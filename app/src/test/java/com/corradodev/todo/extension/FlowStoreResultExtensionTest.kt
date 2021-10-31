@@ -1,5 +1,6 @@
 package com.corradodev.todo.extension
 
+import com.corradodev.todo.data.DataError
 import com.corradodev.todo.data.DataState
 import com.corradodev.todo.data.successData
 import com.dropbox.android.external.store4.ResponseOrigin
@@ -30,7 +31,7 @@ class FlowStoreResultExtensionTest {
                 )
             )
         }.toResult().first()
-        assertThat(errorState).isEqualTo(DataState.Error(exception))
+        assertThat(errorState).isEqualTo(DataState.Error(DataError("")))
     }
 
     @Test
@@ -44,7 +45,10 @@ class FlowStoreResultExtensionTest {
                 )
             )
         }.toResult().first() as DataState.Error
-        assertThat(errorState.throwable.message).isEqualTo(error)
+        assertThat(
+            errorState.error
+                .message
+        ).isEqualTo(error)
     }
 
     @Test
