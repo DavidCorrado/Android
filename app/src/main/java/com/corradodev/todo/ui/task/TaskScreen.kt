@@ -15,9 +15,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.corradodev.todo.R
-import com.corradodev.todo.data.ViewState
+import com.corradodev.todo.data.DataState
 import com.corradodev.todo.data.successData
-import com.corradodev.todo.view.ViewStateView
+import com.corradodev.todo.view.DataStateView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -39,7 +39,7 @@ fun TaskScreen(
                             onClick = {
                                 coroutineScope.launch {
                                     val result = viewModel.saveTask(task)
-                                    if (result is ViewState.Success) {
+                                    if (result is DataState.Success) {
                                         navController.popBackStack()
                                     }
                                 }
@@ -56,7 +56,7 @@ fun TaskScreen(
                                 onClick = {
                                     coroutineScope.launch {
                                         val result = viewModel.deleteTask(task)
-                                        if (result is ViewState.Success) {
+                                        if (result is DataState.Success) {
                                             navController.popBackStack()
                                         }
                                     }
@@ -82,15 +82,15 @@ fun TaskScreen(
             )
         },
         content = {
-            ViewStateView(viewState) { task ->
+            DataStateView(viewState) { task ->
                 Column(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
                 ) {
                     TextField(
-                        value = task.name,
-                        onValueChange = { viewModel.taskModelUpdate(task.copy(name = it)) },
+                        value = task.title,
+                        onValueChange = { viewModel.taskModelUpdate(task.copy(title = it)) },
                         label = { Text(stringResource(id = R.string.name)) },
                         modifier = Modifier.fillMaxWidth()
                     )

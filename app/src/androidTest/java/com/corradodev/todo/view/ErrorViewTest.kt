@@ -3,6 +3,7 @@ package com.corradodev.todo.view
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import com.corradodev.todo.data.DataError
 import com.corradodev.todo.ui.theme.AppTheme
 import org.junit.Rule
 import org.junit.Test
@@ -16,7 +17,7 @@ class ErrorViewTest {
         val error = "Error"
         composeTestRule.setContent {
             AppTheme {
-                ErrorView(Exception(error))
+                ErrorView(DataError(error))
             }
         }
         composeTestRule.onNodeWithText(error).assertIsDisplayed()
@@ -27,7 +28,7 @@ class ErrorViewTest {
         val error = "Unknown"
         composeTestRule.setContent {
             AppTheme {
-                ErrorView(Throwable(null, null))
+                ErrorView(DataError(null))
             }
         }
         composeTestRule.onNodeWithText(error).assertIsDisplayed()

@@ -2,7 +2,7 @@ package com.corradodev.todo.ui.tasks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.corradodev.todo.data.ViewState
+import com.corradodev.todo.data.DataState
 import com.corradodev.todo.data.task.Task
 import com.corradodev.todo.data.task.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TasksViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
-    private val _state = MutableStateFlow<ViewState<List<Task>>>(ViewState.Loading)
+    private val _state = MutableStateFlow<DataState<List<Task>>>(DataState.Loading)
     val state = _state.asStateFlow()
 
     init {

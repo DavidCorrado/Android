@@ -1,22 +1,22 @@
 package com.corradodev.todo.view
 
 import androidx.compose.runtime.Composable
-import com.corradodev.todo.data.ViewState
+import com.corradodev.todo.data.DataState
 
 @Composable
-fun <T> ViewStateView(viewState: ViewState<T>, content: @Composable (T) -> Unit) {
-    when (viewState) {
-        is ViewState.Loading -> {
+fun <T> DataStateView(dataState: DataState<T>, content: @Composable (T) -> Unit) {
+    when (dataState) {
+        is DataState.Loading -> {
             LoadingView()
         }
-        is ViewState.Error -> {
-            ErrorView(viewState.throwable)
+        is DataState.Error -> {
+            ErrorView(dataState.error)
         }
-        is ViewState.Success -> {
-            if ((viewState.data as? List<*>)?.isEmpty() == true) {
+        is DataState.Success -> {
+            if ((dataState.data as? List<*>)?.isEmpty() == true) {
                 EmptyView()
             } else {
-                content(viewState.data)
+                content(dataState.data)
             }
         }
     }
