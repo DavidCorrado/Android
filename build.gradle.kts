@@ -1,7 +1,4 @@
-plugins {
-    // Version hardcoded until version_catalog supports it
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
-}
+
 
 buildscript {
     repositories {
@@ -33,7 +30,6 @@ subprojects {
 }
 
 allprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
     repositories {
         google()
         mavenCentral()
@@ -44,7 +40,3 @@ tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
 
-ktlint {
-    android.set(true)
-    outputColorName.set("RED")
-}

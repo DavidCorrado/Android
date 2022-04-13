@@ -21,10 +21,7 @@ class TaskRepository @Inject constructor(
     private val apiService: APIService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : Repository<Task> {
-    private val storeList = StoreBuilder
-        .from(
-            fetcher = Fetcher.of { apiService.findTasks() },
-            sourceOfTruth = SourceOfTruth.of(
+    private val storeList = StoreBuilder.from(fetcher = Fetcher.of { apiService.findTasks() }, sourceOfTruth = SourceOfTruth.of(
                 reader = { db.taskDAO().findAll() },
                 writer = { _: Any, input: List<Task> -> db.taskDAO().saveAll(input) },
             )

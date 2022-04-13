@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("jacoco")
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 android {
     testCoverage {
@@ -145,3 +146,9 @@ tasks.withType<Test> {
         excludes = listOf("jdk.internal.*")
     }
 }
+
+ktlint {
+    android.set(true)
+    outputColorName.set("RED")
+}
+
